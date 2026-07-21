@@ -26,10 +26,11 @@ Class {
 
 { #category : 'building' }
 DJWaveformElement >> buildPlayhead [
+
 	playheadElement := BlElement new
-		background: Color red;
-		size: 2 @ self extent y;
-		yourself.
+		                   background: Color red;
+		                   extent: 2 @ self extent y;
+		                   yourself.
 	self addChild: playheadElement
 ]
 
@@ -89,7 +90,8 @@ DJWaveformElement >> maxZoom [
 
 { #category : 'api - tasks' }
 DJWaveformElement >> onExtentChanged [
-	playheadElement size: 2 @ self extent y.
+
+	playheadElement extent: 2 @ self extent y.
 	self rebuildWaveGeometry.
 	self updatePlayhead
 ]
@@ -110,9 +112,10 @@ DJWaveformElement >> player: aDJPlayer [
 
 { #category : 'geometry' }
 DJWaveformElement >> rebuildWaveGeometry [
+
 	peaks isEmpty ifTrue: [ ^ self ].
 	waveElement
-		size: self waveWidth @ self extent y;
+		extent: self waveWidth @ self extent y;
 		geometry: (BlPolygonGeometry vertices: self waveVertices)
 ]
 
