@@ -57,12 +57,12 @@ DJAudioThummbnail >> initialize [
 DJAudioThummbnail >> loadFromFile: aPath [
 	| reference format info samples |
 	reference := aPath asFileReference.
-	format := DJAudioFormat new formatForFile: reference.  "<- your manager selector"
+	format := DJAudioFormat new formats
+		detect: [ :fmt | fmt canHandleFile: reference ]
+		ifNone: [ nil ].
 	format ifNil: [ ^ self error: 'Unsupported: ', reference basename ].
-	reference binaryReadStreamDo: [ :aStream |
-		info := format readInfoFrom: aStream.                     "<- your header-parse selector"
-		aStream position: 0.
-		samples := format readSamplesFrom: aStream info: info ].
+	info := format readInfoFrom: reference.
+	samples := format readSamplesFrom: reference info: info.
 	sampleRate := info sampleRate.
 	self computeFrom: samples
 ]
