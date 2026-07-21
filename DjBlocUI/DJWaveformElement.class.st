@@ -113,10 +113,14 @@ DJWaveformElement >> player: aDJPlayer [
 { #category : 'geometry' }
 DJWaveformElement >> rebuildWaveGeometry [
 
-	peaks isEmpty ifTrue: [ ^ self ].
+	| columns |
+	thumbnail ifNil: [ ^ self ].
+	columns := thumbnail peaksForColumns:
+		           (self width * zoomFactor) rounded.
+	columns isEmpty ifTrue: [ ^ self ].
 	waveElement
-		extent: self waveWidth @ self extent y;
-		geometry: (BlPolygonGeometry vertices: self waveVertices)
+		extent: columns size @ self extent y;
+		geometry: (BlPolygonGeometry vertices: (self verticesFor: columns))
 ]
 
 { #category : 'api - tasks' }
@@ -125,6 +129,13 @@ DJWaveformElement >> startPlayheadTask [
 		delay: 50 milliSeconds;
 		action: [ self updatePlayhead ];
 		yourself)
+]
+
+{ #category : 'accessing' }
+DJWaveformElement >> thumbnail: aDJAudioThumbnail [ 
+	thumbnail := aDJAudioThumbnail.
+	self rebuildWaveGeometry.
+	self updatePlayhead
 ]
 
 { #category : 'api - tasks' }
@@ -139,15 +150,16 @@ DJWaveformElement >> updatePlayhead [
 ]
 
 { #category : 'geometry' }
-DJWaveformElement >> waveVertices [
-	"Closed polygon: max edge left→right, min edge right→left"
+DJWaveformElement >> verticesFor: columns [
+	"Closed polygon: max edge left→right, then min edge right→left.
+	 columns: Array of min@max Points, normalized -1.0..1.0."
 	| mid top bottom |
 	mid := self extent y / 2.
 	top := OrderedCollection new.
 	bottom := OrderedCollection new.
-	peaks doWithIndex: [ :pair :i |
+	columns doWithIndex: [ :pair :i |
 		| x |
-		x := (i - 1) * zoomFactor.
+		x := i - 1.
 		top add: x @ (mid - (pair y * mid)).
 		bottom addFirst: x @ (mid - (pair x * mid)) ].
 	^ (top , bottom) asArray
