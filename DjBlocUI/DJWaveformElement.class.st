@@ -20,8 +20,9 @@ Class {
 		'playheadElement',
 		'zoomButton'
 	],
-	#category : 'DjBlocUI',
-	#package : 'DjBlocUI'
+	#category : 'DjBlocUI-Waveform',
+	#package : 'DjBlocUI',
+	#tag : 'Waveform'
 }
 
 { #category : 'building' }
