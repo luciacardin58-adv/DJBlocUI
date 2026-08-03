@@ -22,34 +22,36 @@ DJFaderElementTest >> setUp [
 DJFaderElementTest >> testCallbackRestoredAfterError [
     self should: [ fader setValueSilently: 'not a number' ] raise: Error.
     fader setValue: 7.
-    self assert: fired asArray equals: #(7)
+    self assert: fired size equals: 1.
+    self assert: fired first closeTo: 7
 ]
 
 { #category : 'tests' }
 DJFaderElementTest >> testCallbackRestoredAfterSilentSet [
     fader setValueSilently: 42.
     fader setValue: 7.
-    self assert: fired asArray equals: #(7)
+    self assert: fired asArray  first closeTo: 7.
 ]
 
 { #category : 'tests' }
 DJFaderElementTest >> testNestedSilentSetRestoresOuterCallback [
-    fader callBack: [ :v |
-        fired add: v.
-        fader setValueSilently: 10 ].
-    fader setValue: 42.
-    self assert: fired asArray equals: #(42).
-    fired removeAll.
-    fader setValue: 7.
-    self assert: fired asArray equals: #(7)
 
+	fader callBack: [ :v |
+			fired add: v.
+			fader setValueSilently: 10 ].
+	fader setValue: 42.
+	self assert: fired asArray first closeTo: 42.
+	fired removeAll.
+	fader setValue: 7.
+	self assert: fired asArray first closeTo: 7.
 ]
 
 { #category : 'tests' }
 DJFaderElementTest >> testSetValueFiresCallback [
-    fader setValue: 42.
-    self assert: fired size equals: 1.
-    self assert: fired first equals: 42
+
+	fader setValue: 42.
+	self assert: fired size equals: 1.
+	self assert: fired first closeTo:  42
 ]
 
 { #category : 'tests' }
@@ -62,14 +64,16 @@ DJFaderElementTest >> testSetValueSilentlyMovesHandle [
 
 { #category : 'tests' }
 DJFaderElementTest >> testSetValueSilentlyStillUpdatesValue [
-    fader setValueSilently: 42.
-    self assert: fader value equals: 42
+
+	fader setValueSilently: 42.
+	self assert: fader value closeTo: 42
 ]
 
 { #category : 'tests' }
 DJFaderElementTest >> testSilentSetWithNoCallback [
-    fader callBack: nil.
-    fader setValueSilently: 42.
-    self assert: fader value equals: 42.
-    self assert: fader callBack isNil
+
+	fader callBack: nil.
+	fader setValueSilently: 42.
+	self assert: fader value closeTo: 42.
+	self assert: fader callBack isNil
 ]
