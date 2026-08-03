@@ -6,6 +6,8 @@ outerRingColor and valueColor - ICDarkKnob2 holds nothing else.
 Class {
 	#name : 'DJKnobElement',
 	#superclass : 'ICDarkKnob2',
+	#traits : 'TDJSilentSettable',
+	#classTraits : 'TDJSilentSettable classTrait',
 	#category : 'DjBlocUI-SimpleWidgets',
 	#package : 'DjBlocUI',
 	#tag : 'SimpleWidgets'
