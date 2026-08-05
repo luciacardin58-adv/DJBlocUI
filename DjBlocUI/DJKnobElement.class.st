@@ -24,7 +24,7 @@ DJKnobElement class >> example [
 			             c horizontal matchParent.
 			             c vertical matchParent ];
 		             yourself.
-	container addChild: (self new
+	container addChild: ((self label: 'MID')
 			 constraintsDo: [ :c |
 				 c frame horizontal alignCenter.
 				 c frame vertical alignCenter ];
@@ -45,8 +45,12 @@ DJKnobElement >> backColor [
 
 { #category : 'initialization' }
 DJKnobElement >> initialize [
-	"initializeGeometry hardcodes extent: diameter + 100 while the ring
-	 is only diameter + 30. Retighten so mixer layout is predictable."
+	"ICKnob sets extent: diameter + 100 in initializeGeometry, but an
+	 explicit extent does not survive a parent layout. The frame
+	 collapses toward the ring and takes the label band with it.
+	 minLabel, maxLabel and currentLabel all live in that band."
 	super initialize.
-	self extent: (self outerRingSize + 20) asPoint
+	self constraintsDo: [ :c |
+		c horizontal exact: self diameter + 100.
+		c vertical exact: self diameter + 100 ]
 ]
