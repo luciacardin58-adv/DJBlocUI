@@ -23,7 +23,28 @@ DJPanelElement class >> example [
         title: 'DJPanelElement'
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'instance creation' }
+DJPanelElement class >> row [
+	"An invisible horizontal row that fills its parent."
+	^ self new beBare; beRow; beMatchingParent; yourself
+]
+
+{ #category : 'api - layout' }
+DJPanelElement >> beBare [
+	"Undo my chrome. For invisible layout rows that only group children."
+	self background: Color transparent.
+	self border: BlBorder empty.
+	self padding: BlInsets empty
+]
+
+{ #category : 'api - layout' }
+DJPanelElement >> beMatchingParent [
+	self constraintsDo: [ :c |
+		c horizontal matchParent.
+		c vertical matchParent ]
+]
+
+{ #category : 'api - layout' }
 DJPanelElement >> beRow [
  
     self layout: (BlLinearLayout horizontal cellSpacing: DJTheme gap)

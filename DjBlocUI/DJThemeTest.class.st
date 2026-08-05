@@ -6,13 +6,13 @@ Class {
 	#tag : 'Tests'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'helpers' }
 DJThemeTest >> colourSelectors [
 
     ^ self paletteSelectors reject: [ :each | each = #gap ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'helpers' }
 DJThemeTest >> paletteSelectors [
     "Behavior >> selectors answers only locally defined selectors, so this
      picks up every palette method on DJTheme's class side and nothing
