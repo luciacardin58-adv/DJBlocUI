@@ -15,7 +15,8 @@ DJTheme class >> accent [
 ]
 
 { #category : 'colors' }
-DJTheme class >> console [ [ ^ Color r: 14 g: 14 b: 14 range: 255 ]
+DJTheme class >> console [
+    ^ Color r: 14 g: 14 b: 14 range: 255
 ]
 
 { #category : 'colors' }
@@ -29,11 +30,25 @@ DJTheme class >> gap [
 ]
 
 { #category : 'colors' }
-DJTheme class >> hairline [ [ ^ Color r: 36 g: 36 b: 36 range: 255 ]
+DJTheme class >> hairline [
+
+	
+		^ Color
+			  r: 36
+			  g: 36
+			  b: 36
+			  range: 255 
 ]
 
 { #category : 'colors' }
-DJTheme class >> panel [ [ ^ Color r: 20 g: 20 b: 20 range: 255 ]
+DJTheme class >> panel [
+
+	
+		^ Color
+			  r: 20
+			  g: 20
+			  b: 20
+			  range: 255 
 ]
 
 { #category : 'colors' }

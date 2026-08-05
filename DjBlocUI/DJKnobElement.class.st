@@ -12,3 +12,20 @@ Class {
 	#package : 'DjBlocUI',
 	#tag : 'SimpleWidgets'
 }
+
+{ #category : 'examples' }
+DJKnobElement class >> example [
+
+    <script>
+    | container |
+    container := BlElement new
+                     background: DJTheme console;
+                     padding: (BlInsets all: 20);
+                     layout: BlFlowLayout horizontal;
+                     clipChildren: false;
+                     yourself.
+    container addChild: self new.
+    (container openInSpace)
+        extent: 240 @ 240;
+        title: 'DJKnobElement'
+]

@@ -9,6 +9,20 @@ Class {
 	#tag : 'SimpleWidgets'
 }
 
+{ #category : 'examples' }
+DJPanelElement class >> example [
+   
+    <script>
+    | panel |
+    panel := self new.
+    panel constraintsDo: [ :c |
+        c horizontal matchParent.
+        c vertical matchParent ].
+    (panel openInSpace)
+        extent: 300 @ 200;
+        title: 'DJPanelElement'
+]
+
 { #category : 'as yet unclassified' }
 DJPanelElement >> beRow [
  
