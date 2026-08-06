@@ -9,3 +9,12 @@ Class {
 	#package : 'DjBlocUI',
 	#tag : 'DeckBody'
 }
+
+{ #category : 'initialization' }
+DJJogWheelElement >> initialize [
+	super initialize.
+	self geometry: BlCircleGeometry new.
+	self constraintsDo: [ :c |
+		c horizontal exact: 200.
+		c vertical exact: 200 ]
+]

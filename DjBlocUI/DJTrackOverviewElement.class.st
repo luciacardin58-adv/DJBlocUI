@@ -9,3 +9,11 @@ Class {
 	#package : 'DjBlocUI',
 	#tag : 'DeckHeader'
 }
+
+{ #category : 'initialization' }
+DJTrackOverviewElement >> initialize [
+	super initialize.
+	self constraintsDo: [ :c |
+		c horizontal matchParent.
+		c vertical exact: 60 ]
+]

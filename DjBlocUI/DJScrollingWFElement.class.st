@@ -9,3 +9,11 @@ Class {
 	#package : 'DjBlocUI',
 	#tag : 'DeckBody'
 }
+
+{ #category : 'initialization' }
+DJScrollingWFElement >> initialize [
+	super initialize.
+	self constraintsDo: [ :c |
+		c horizontal matchParent.
+		c vertical exact: 110 ]
+]

@@ -4,8 +4,16 @@ I read from a Phausto bargraph on a refresh tick.
 "
 Class {
 	#name : 'DJLevelMeterElement',
-	#superclass : 'BlElement',
+	#superclass : 'DJStubElement',
 	#category : 'DjBlocUI-MixerStrip',
 	#package : 'DjBlocUI',
 	#tag : 'MixerStrip'
 }
+
+{ #category : 'initialization' }
+DJLevelMeterElement >> initialize [
+	super initialize.
+	self constraintsDo: [ :c |
+		c horizontal exact: 24.
+		c vertical matchParent ]
+]

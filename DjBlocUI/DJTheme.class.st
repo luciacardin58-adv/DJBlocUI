@@ -51,9 +51,25 @@ DJTheme class >> panel [
 			  range: 255 
 ]
 
+{ #category : 'building' }
+DJTheme class >> stubLabel: aString [
+	^ self textElement: aString color: self dimText size: 12
+ 
+]
+
 { #category : 'colors' }
 DJTheme class >> text [ 
 ^ Color veryLightGray
+]
+
+{ #category : 'building' }
+DJTheme class >> textElement: aString color: aColor size: anInteger [
+
+	^ BlTextElement new
+		  text: (aString asRopedText attributes: {
+					   (BlTextForegroundAttribute paint: aColor).
+					   (BlFontSizeAttribute size: anInteger) });
+		  yourself
 ]
 
 { #category : 'colors' }
