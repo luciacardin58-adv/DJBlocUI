@@ -40,11 +40,16 @@ DJCueMarkerElement class >> example [
 ]
 
 { #category : 'helper' }
-DJCueMarkerElement >> clear [ 
-
-"The deck dropped its cue point."
-	position := nil.
+DJCueMarkerElement >> clear [
+	
+	"The deck dropped its cue point."
+	cuePosition := nil.
 	self rebuild
+]
+
+{ #category : 'accessing' }
+DJCueMarkerElement >> cuePosition [ 
+^ cuePosition 
 ]
 
 { #category : 'as yet unclassified' }
@@ -57,14 +62,14 @@ DJCueMarkerElement >> cuePosition: aFraction [
 	self rebuild
 ]
 
-{ #category : 'building' }
+{ #category : 'helper' }
 DJCueMarkerElement >> flagAt: aNumber [
 	"The flag hangs to the right of the line so it never covers the
 	 sample the cue actually sits on."
 	| flag |
 	flag := BlElement new
 		        background: markerColor;
-		        size: 16 @ 14;
+		        extent: 16 @ 14;
 		        position: aNumber @ 0;
 		        layout: BlFrameLayout new;
 		        constraintsDo: [ :c | c ignoreByLayout ];
@@ -93,13 +98,24 @@ DJCueMarkerElement >> initialize [
 
 { #category : 'testing' }
 DJCueMarkerElement >> isSet [
-	^ position isNotNil
+
+	^ cuePosition isNotNil
 ]
 
 { #category : 'accessing' }
 DJCueMarkerElement >> label: aString [
 	cueLabel := aString.
 	self rebuild
+]
+
+{ #category : 'helper' }
+DJCueMarkerElement >> lineAt: aNumber [
+	^ BlElement new
+		  background: markerColor;
+		  extent: 2 @ self height;
+		  position: aNumber @ 0;
+		  constraintsDo: [ :c | c ignoreByLayout ];
+		  yourself
 ]
 
 { #category : 'accessing' }
@@ -121,7 +137,7 @@ DJCueMarkerElement >> rebuild [
 	| x |
 	self removeChildren.
 	(self isSet and: [ self width > 0 ]) ifFalse: [ ^ self ].
-	x := self xFor: position.
+	x := self xFor: cuePosition.
 	(x between: 0 and: self width) ifFalse: [ ^ self ].
 	self addChild: (self lineAt: x).
 	self addChild: (self flagAt: x)

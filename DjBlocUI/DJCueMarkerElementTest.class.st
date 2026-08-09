@@ -11,13 +11,13 @@ Class {
 
 { #category : 'running' }
 DJCueMarkerElementTest >> setUp [
-"initialize declares matchParent, which resolves to zero on a
-	 detached element. Exact constraints hold through a rebuild."
+	| space |
 	super setUp.
 	marker := DJCueMarkerElement new.
-	marker constraintsDo: [ :c |
-		c horizontal exact: 100.
-		c vertical exact: 40 ].
+	space := BlSpace new.
+	space extent: 100 @ 40.
+	space root addChild: marker.
+	space root forceLayout
 ]
 
 { #category : 'tests' }
@@ -35,6 +35,17 @@ DJCueMarkerElementTest >> testDiagnostic [
 	marker windowFrom: 0.25 span: 0.5.
 	after := marker width.
 	self assert: { before. after. (marker xFor: 0.75) } equals: #( 100 100 100 )
+]
+
+{ #category : 'tests' }
+DJCueMarkerElementTest >> testDiagnostic2 [
+	self assert: { marker width. marker parent isNotNil } equals: #( 100 true )
+]
+
+{ #category : 'tests' }
+DJCueMarkerElementTest >> testDiagnostic3 [
+	marker cuePosition: 0.5.
+	self assert: { marker cuePosition. marker isSet } equals: #( 0.5 true )
 ]
 
 { #category : 'tests' }
