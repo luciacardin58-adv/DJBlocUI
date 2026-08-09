@@ -11,16 +11,22 @@ Class {
 
 { #category : 'examples' }
 DJPanelElement class >> example [
-   
-    <script>
-    | panel |
-    panel := self new.
-    panel constraintsDo: [ :c |
-        c horizontal matchParent.
-        c vertical matchParent ].
-    (panel openInSpace)
-        extent: 300 @ 200;
-        title: 'DJPanelElement'
+	"Two markers make the chrome legible: the gap between them is
+	 cellSpacing, the gap to the edge is padding, and stacked rather
+	 than side by side means the default layout is vertical."
+	<script>
+	| panel |
+	panel := self new beMatchingParent; yourself.
+	2 timesRepeat: [
+		panel addChild: (BlElement new
+				 background: DJTheme accent;
+				 constraintsDo: [ :c |
+					 c horizontal exact: 60.
+					 c vertical exact: 40 ];
+				 yourself) ].
+	(panel openInSpace)
+		extent: 300 @ 200;
+		title: 'DJPanelElement'
 ]
 
 { #category : 'instance creation' }
