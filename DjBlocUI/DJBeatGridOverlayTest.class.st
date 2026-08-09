@@ -11,11 +11,14 @@ Class {
 
 { #category : 'running' }
 DJBeatGridOverlayTest >> setUp [
-	"Sized, because rebuild cannot place a line until it knows its width."
+	"size: sets the constraint; extent only catches up after a layout
+	 pass, and rebuild bails while width is still 0. forceLayout exists
+	 for exactly this - see its comment in BlElement."
 
 	super setUp.
 	grid := DJBeatGridOverlay new.
-	grid extent: 100 @ 40
+	grid extent: 100 @ 40.
+	grid forceLayout
 ]
 
 { #category : 'tests' }
