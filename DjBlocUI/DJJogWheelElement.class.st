@@ -109,19 +109,6 @@ DJJogWheelElement >> onNudge: aBlock [
 	onNudge := aBlock
 ]
 
-{ #category : 'accessing' }
-DJJogWheelElement >> position [ 
-^ position
-]
-
-{ #category : 'geometry position' }
-DJJogWheelElement >> position: aFraction [
-	"0 to 1 through the track. Wraps, so a track that runs past the
-	 end shows the platter coming round again rather than sticking."
-	position := aFraction fractionPart abs.
-	self updateMarker
-]
-
 { #category : 'updating' }
 DJJogWheelElement >> updateMarker [
 	| angle radius centre |

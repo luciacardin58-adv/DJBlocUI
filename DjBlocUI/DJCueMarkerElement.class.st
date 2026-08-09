@@ -9,7 +9,8 @@ Class {
 		'windowSpan',
 		'cueLabel',
 		'markerColor',
-		'position'
+		'position',
+		'cuePosition'
 	],
 	#category : 'DjBlocUI-DeckBody',
 	#package : 'DjBlocUI',
@@ -43,6 +44,16 @@ DJCueMarkerElement >> clear [
 
 "The deck dropped its cue point."
 	position := nil.
+	self rebuild
+]
+
+{ #category : 'as yet unclassified' }
+DJCueMarkerElement >> cuePosition: aFraction [
+ 
+	"A fraction of the whole track, 0 to 1. Not called position: -
+	 that selector belongs to BlElement and overriding it breaks
+	 Bloc's bounds machinery."
+	cuePosition := aFraction.
 	self rebuild
 ]
 
@@ -102,18 +113,6 @@ DJCueMarkerElement >> onAddedToSceneGraph [
 	"A cue can be set while I am still detached, before layout has
 	 given me a width."
 	super onAddedToSceneGraph.
-	self rebuild
-]
-
-{ #category : 'geometry position' }
-DJCueMarkerElement >> position [ 
-^ position 
-]
-
-{ #category : 'api - bounds' }
-DJCueMarkerElement >> position: aFraction [
-	"A fraction of the whole track, 0 to 1."
-	position := aFraction.
 	self rebuild
 ]
 
