@@ -26,6 +26,16 @@ DJTransportBarElement class >> example [
 	space show
 ]
 
+{ #category : 'accessing' }
+DJTransportBarElement >> beatJump [
+	^ beatJump
+]
+
+{ #category : 'accessing' }
+DJTransportBarElement >> cueButton [
+	^ cueButton
+]
+
 { #category : 'initialization' }
 DJTransportBarElement >> initialize [
 	super initialize.
@@ -41,4 +51,9 @@ DJTransportBarElement >> initializeParts [
 	cueButton := DJCueButtonElement new.
 	beatJump := DJBeatJumpElement new.
 	self addChildren: { playButton. cueButton. beatJump }
+]
+
+{ #category : 'accessing' }
+DJTransportBarElement >> playButton [
+	^ playButton
 ]

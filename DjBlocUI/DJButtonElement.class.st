@@ -68,6 +68,14 @@ DJButtonElement >> isOn [
 ]
 
 { #category : 'accessing' }
+DJButtonElement >> isToggleable: aBoolean [
+	"ICButton >> isToggleable: re-sends initializeEvents, and Bloc appends handlers rather than replacing them - so a toggleable button keeps the stale mouse-up from construction and gains a duplicate mouse-down. Note the handlers live on button, not self."
+	button removeEventHandlersSuchThat: [ :each |
+		{ BlMouseDownEvent. BlMouseUpEvent } includes: each eventClass ].
+	super isToggleable: aBoolean
+]
+
+{ #category : 'accessing' }
 DJButtonElement >> label: aString [
 	inputText := aString.
 	inputLabel text: (self isOn
