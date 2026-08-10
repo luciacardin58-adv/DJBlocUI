@@ -19,18 +19,44 @@ Class {
 	#tag : 'DeckBody'
 }
 
-{ #category : 'as yet unclassified' }
-DJTempoFaderElement >> buildMarker [
-	"The marker is placed by trigonometry, so the layout must leave
-	 it alone."
-	marker := BlElement new
-		          background: DJTheme accent;
-		          geometry: BlCircleGeometry new;
-		          size: 14 @ 14;
-		          constraintsDo: [ :c | c ignoreByLayout ];
-		          yourself.
-	self updateMarker.
-	^ marker
+{ #category : 'example' }
+DJTempoFaderElement class >> example [
+	<script>
+	| container fader readout space |
+	fader := self label: 'TEMPO'.
+	readout := DJTheme textElement: fader displayString color: DJTheme accent size: 12.
+	fader callBack: [ :each |
+		readout text: (DJTheme
+				 textElement: fader displayString
+				 color: DJTheme accent
+				 size: 12) text ].
+	container := DJPanelElement new beMatchingParent; yourself.
+	container addChildren: { fader. readout }.
+	space := container inSpace.
+	space extent: 200 @ 380.
+	space title: 'DJTempoFaderElement'.
+	space show
+]
+
+{ #category : 'example' }
+DJTempoFaderElement class >> exampleSilent [
+	"No readout. If the thumb moves here but not in example, the
+	 callback is raising mid-drag."
+	<script>
+	| container space |
+	container := DJPanelElement new beMatchingParent; yourself.
+	container addChild: (self new callBack: [ :each | ]; yourself).
+	space := container inSpace.
+	space extent: 200 @ 360.
+	space title: 'DJTempoFaderElement (bare)'.
+	space show
+]
+
+{ #category : 'displaying' }
+DJTempoFaderElement >> displayString [
+	"The percentage as shown. snappedValue, not value, so the readout
+	 reads 0.00 through the centre window."
+	^ (self snappedValue printShowingDecimalPlaces: 2) , ' %'
 ]
 
 { #category : 'initialization' }
@@ -44,17 +70,34 @@ DJTempoFaderElement >> initialize [
 	self setValueSilently: 0
 ]
 
-{ #category : 'initialization' }
-DJTempoFaderElement >> initializeParts [
-	bpmLabel := DJTheme textElement: '--' color: DJTheme text size: 16.
-	timeLabel := DJTheme textElement: '00:00' color: DJTheme dimText size: 12.
-	self addChildren: { bpmLabel. timeLabel }.
-	self addChild: self buildMarker
+{ #category : 'accessing' }
+DJTempoFaderElement >> isCentred [
+	^ self snappedValue = 0
 ]
 
-{ #category : 'as yet unclassified' }
-DJTempoFaderElement >> nitializeEvents [
-	self addEventHandlerOn: BlDragEvent do: [ :event |
-		self nudgeBy: event delta y negated / 200 ]
- 
+{ #category : 'accessing' }
+DJTempoFaderElement >> rateMultiplier [
+	"The deck wants a multiplier, not a percentage."
+	^ 1 + (self snappedValue / 100)
+]
+
+{ #category : 'operations' }
+DJTempoFaderElement >> reset [
+	"Silent: the deck asked for this, so telling it back would echo."
+	self setValueSilently: 0
+]
+
+{ #category : 'accessing' }
+DJTempoFaderElement >> snapWindow [ 
+^ 0.15
+]
+
+{ #category : 'accessing' }
+DJTempoFaderElement >> snappedValue [
+	"Without this a reset deck sits at 0.004 percent and sync corrects
+	 forever. Snapping is a DJ decision, so it lives here rather than
+	 in DJFaderElement or upstream."
+	^ self value abs < self snapWindow
+		  ifTrue: [ 0 ]
+		  ifFalse: [ self value ]
 ]
