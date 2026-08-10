@@ -33,7 +33,7 @@ DJButtonElement class >> exampleMomentary [
 		title: 'DJButtonElement (momentary)'
 ]
 
-{ #category : 'evaluating' }
+{ #category : 'initialization' }
 DJButtonElement >> initialize [
 "ICLabelButton builds inputLabel only via class >> label:, so a plain
 	 new gives a button whose toggle raises DNU on inputLabel."
@@ -42,7 +42,7 @@ DJButtonElement >> initialize [
 	self initializeLabel
 ]
 
-{ #category : 'evaluating' }
+{ #category : 'initialization' }
 DJButtonElement >> initializeButton [
 	"ICLabelButton gives the resting button an opaque grey gaussian
 	 shadow at zero offset, which reads as a lighter rectangle behind

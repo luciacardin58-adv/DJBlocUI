@@ -2,7 +2,7 @@
 I am a vertical line marking the current play position on a waveform.
  
 My playPosition is a fraction of the whole track, 0 to 1. It is never
-nil - a deck always has a position, even at zero - so unlike a cue
+nil: a deck always has a position, even at zero. Unlike a cue
 marker I have nothing to clear.
  
 A scrolling view holds me at its centre by moving its window rather than
