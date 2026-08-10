@@ -108,7 +108,13 @@ DJWaveformElement >> peaks: aCollection [
 { #category : 'accessing' }
 DJWaveformElement >> player: aDJPlayer [
 	"Decouple from the player's API: we only need a 0..1 position"
-	playheadPositionBlock := [ aDJPlayer normalizedPosition ]
+	self positionBlock: [ aDJPlayer normalizedPosition ]
+]
+
+{ #category : 'accessing' }
+DJWaveformElement >> positionBlock: aBlock [
+	"A block answering 0 to 1. player: wraps a player in one of these."
+	playheadPositionBlock := aBlock
 ]
 
 { #category : 'geometry' }
@@ -122,6 +128,15 @@ DJWaveformElement >> rebuildWaveGeometry [
 	waveElement
 		extent: columns size @ self extent y;
 		geometry: (BlPolygonGeometry vertices: (self verticesFor: columns))
+]
+
+{ #category : 'api - tasks' }
+DJWaveformElement >> scrollOffset [
+	"How far the wave is pushed left. An overview never scrolls and
+	 answers 0; I keep the playhead centred until I hit an end."
+	^ (playheadPositionBlock value * self waveWidth - (self extent x / 2))
+		  clampBetween: 0
+		  and: (self waveWidth - self extent x max: 0)
 ]
 
 { #category : 'api - tasks' }
@@ -143,11 +158,9 @@ DJWaveformElement >> thumbnail: aDJAudioThumbnail [
 DJWaveformElement >> updatePlayhead [
 	| x offset |
 	x := playheadPositionBlock value * self waveWidth.
-	offset := (x - (self extent x / 2))
-		clampBetween: 0
-		and: (self waveWidth - self extent x max: 0).
+	offset := self scrollOffset.
 	waveElement position: offset negated @ 0.
-	playheadElement position: (x - offset) @ 0
+	playheadElement position: x - offset @ 0
 ]
 
 { #category : 'geometry' }
@@ -167,6 +180,7 @@ DJWaveformElement >> verticesFor: columns [
 ]
 
 { #category : 'geometry' }
-DJWaveformElement >> waveWidth [ 
-^ peaks size * zoomFactor 
+DJWaveformElement >> waveWidth [
+	"Must agree with the column count rebuildWaveGeometry asks for, or the playhead maps against a width the wave does not have."
+	^ (self width * zoomFactor) rounded
 ]

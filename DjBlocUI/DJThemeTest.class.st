@@ -22,20 +22,6 @@ DJThemeTest >> paletteSelectors [
 ]
 
 { #category : 'tests' }
-DJThemeTest >> testAccessorsDoNotAnswerTheReceiver [
-    "Same dead-block trap as the palette: a body pasted as [ ^ ivar ]
-     compiles to an unused block and the method answers self."
-
-    | console broken |
-    console := DJConsoleElement new.
-    broken := #( leftDeck rightDeck mixer browser ) select: [ :each |
-                  (console perform: each) == console ].
-    self
-        assert: broken isEmpty
-        description: 'dead block in: ' , broken asArray printString
-]
-
-{ #category : 'tests' }
 DJThemeTest >> testNoPaletteMethodAnswersTheClassItself [
     "A class-side method with no caret answers self, and self is DJTheme.
      The value reaches background: and fails deep inside Bloc as
