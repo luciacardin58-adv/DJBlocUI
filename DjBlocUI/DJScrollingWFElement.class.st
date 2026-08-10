@@ -76,12 +76,11 @@ DJScrollingWFElement >> overlayLayer [
 
 { #category : 'api - tasks' }
 DJScrollingWFElement >> updateOverlays [
-
 	| total |
 	total := self waveWidth.
 	total > 0 ifFalse: [ ^ self ].
-	overlayLayer extent: self extent.
-	overlayLayer forceLayout.
+	overlayLayer measure: (BlExtentMeasurementSpec exact: self extent).
+	overlayLayer applyLayoutIn: (0 @ 0 extent: self extent).
 	overlayLayer childrenDo: [ :each |
 		each
 			windowFrom: self scrollOffset / total

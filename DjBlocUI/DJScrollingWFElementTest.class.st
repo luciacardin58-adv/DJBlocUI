@@ -52,6 +52,12 @@ DJScrollingWFElementTest >> testCueStaysPinnedToItsTrackPositionWhileScrolling [
 ]
 
 { #category : 'tests' }
+DJScrollingWFElementTest >> testDiagnostic [
+	self assert: { wave width. wave waveWidth. wave overlayLayer extent }
+		equals: #( 200 200 nil )
+]
+
+{ #category : 'tests' }
 DJScrollingWFElementTest >> testEveryOverlayGetsTheSameWindow [
 	| first second |
 	first := wave addOverlay: DJPlayheadElement new.
