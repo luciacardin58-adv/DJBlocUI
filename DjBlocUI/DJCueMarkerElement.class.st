@@ -37,6 +37,15 @@ DJCueMarkerElement class >> example [
 ]
 
 { #category : 'building' }
+DJCueMarkerElement >> buildContent [
+	| x |
+	x := self xFor: cuePosition.
+	(self isVisibleAt: x) ifFalse: [ ^ self ].
+	self addChild: (self lineAt: x width: 2 color: markerColor).
+	self addChild: (self flagAt: x)
+]
+
+{ #category : 'building' }
 DJCueMarkerElement >> canDraw [
 	"A deck with no cue draws nothing, not a marker at zero."
 	^ super canDraw and: [ self isSet ]
@@ -110,15 +119,4 @@ DJCueMarkerElement >> label: aString [
 DJCueMarkerElement >> markerColor: aColor [
 	markerColor := aColor.
 	self rebuild
-]
-
-{ #category : 'building' }
-DJCueMarkerElement >> rebuild [
-	| x |
-	self removeChildren.
-	(self isSet and: [ self width > 0 ]) ifFalse: [ ^ self ].
-	x := self xFor: cuePosition.
-	(x between: 0 and: self width) ifFalse: [ ^ self ].
-	self addChild: (self lineAt: x).
-	self addChild: (self flagAt: x)
 ]
