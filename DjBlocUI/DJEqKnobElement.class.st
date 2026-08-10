@@ -35,12 +35,13 @@ DJEqKnobElement >> diameter [
 
 { #category : 'initialization' }
 DJEqKnobElement >> initialize [
-	"initializeDefaultValues has already run by the time I get here, so
-	 the range has to be restated and the value put back at centre."
 	super initialize.
 	self minValue: -100.
 	self maxValue: 100.
-	self setValueSilently: 0
+	self setValueSilently: 0.
+	self constraintsDo: [ :c |
+		c horizontal exact: 80.
+		c vertical exact: 80 ]
 ]
 
 { #category : 'testing' }

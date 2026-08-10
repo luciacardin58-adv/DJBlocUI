@@ -30,10 +30,13 @@ DJFilterKnobElement >> diameter [
 
 { #category : 'initialization' }
 DJFilterKnobElement >> initialize [
-	"Bipolar: low-pass left of centre, high-pass right."
-	inputText ifNil: [ inputText := 'filter' ].
 	super initialize.
-	self initializeLabel
+	self minValue: -100.
+	self maxValue: 100.
+	self setValueSilently: 0.
+	self constraintsDo: [ :c |
+		c horizontal exact: 80.
+		c vertical exact: 80 ]
 ]
 
 { #category : 'testing' }
