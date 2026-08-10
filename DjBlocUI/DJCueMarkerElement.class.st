@@ -3,13 +3,10 @@ I mark a single cue point on a waveform at a given sample position.
 "
 Class {
 	#name : 'DJCueMarkerElement',
-	#superclass : 'BlElement',
+	#superclass : 'DJWaveformOverlayElement',
 	#instVars : [
-		'windowStart',
-		'windowSpan',
 		'cueLabel',
 		'markerColor',
-		'position',
 		'cuePosition'
 	],
 	#category : 'DjBlocUI-DeckBody',
@@ -37,6 +34,12 @@ DJCueMarkerElement class >> example [
 	space extent: 600 @ 140.
 	space title: 'DJCueMarkerElement'.
 	space show
+]
+
+{ #category : 'building' }
+DJCueMarkerElement >> canDraw [
+	"A deck with no cue draws nothing, not a marker at zero."
+	^ super canDraw and: [ self isSet ]
 ]
 
 { #category : 'helper' }
@@ -74,7 +77,8 @@ DJCueMarkerElement >> flagAt: aNumber [
 		        layout: BlFrameLayout new;
 		        constraintsDo: [ :c | c ignoreByLayout ];
 		        yourself.
-	flag addChild: ((DJTheme textElement: cueLabel color: DJTheme console size: 11)
+	flag addChild:
+		((DJTheme textElement: cueLabel color: DJTheme console size: 11)
 			 constraintsDo: [ :c |
 				 c frame horizontal alignCenter.
 				 c frame vertical alignCenter ];
@@ -84,16 +88,10 @@ DJCueMarkerElement >> flagAt: aNumber [
 
 { #category : 'initialization' }
 DJCueMarkerElement >> initialize [
-	windowStart := 0.
-	windowSpan := 1.
+	super initialize.
 	cueLabel := 'A'.
 	markerColor := DJTheme accent.
-	super initialize.
-	self background: Color transparent.
-	self constraintsDo: [ :c |
-		c horizontal matchParent.
-		c vertical matchParent ].
-	self addEventHandlerOn: BlElementExtentChangedEvent do: [ :e | self rebuild ]
+
 ]
 
 { #category : 'testing' }
@@ -108,27 +106,9 @@ DJCueMarkerElement >> label: aString [
 	self rebuild
 ]
 
-{ #category : 'helper' }
-DJCueMarkerElement >> lineAt: aNumber [
-	^ BlElement new
-		  background: markerColor;
-		  extent: 2 @ self height;
-		  position: aNumber @ 0;
-		  constraintsDo: [ :c | c ignoreByLayout ];
-		  yourself
-]
-
 { #category : 'accessing' }
 DJCueMarkerElement >> markerColor: aColor [
 	markerColor := aColor.
-	self rebuild
-]
-
-{ #category : 'helper' }
-DJCueMarkerElement >> onAddedToSceneGraph [
-	"A cue can be set while I am still detached, before layout has
-	 given me a width."
-	super onAddedToSceneGraph.
 	self rebuild
 ]
 
@@ -141,16 +121,4 @@ DJCueMarkerElement >> rebuild [
 	(x between: 0 and: self width) ifFalse: [ ^ self ].
 	self addChild: (self lineAt: x).
 	self addChild: (self flagAt: x)
-]
-
-{ #category : 'accessing' }
-DJCueMarkerElement >> windowFrom: aStart span: aSpan [
-	windowStart := aStart.
-	windowSpan := aSpan.
-	self rebuild
-]
-
-{ #category : 'accessing' }
-DJCueMarkerElement >> xFor: aFraction [
-	^ (aFraction - windowStart) / windowSpan * self width
 ]

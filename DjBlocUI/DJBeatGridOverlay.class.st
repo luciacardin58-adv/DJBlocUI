@@ -4,12 +4,10 @@ I am inert until beat detection provides a grid.
 "
 Class {
 	#name : 'DJBeatGridOverlay',
-	#superclass : 'BlElement',
+	#superclass : 'DJWaveformOverlayElement',
 	#instVars : [
 		'beats',
-		'beatsPerBar',
-		'windowStart',
-		'windowSpan'
+		'beatsPerBar'
 	],
 	#category : 'DjBlocUI-DeckBody',
 	#package : 'DjBlocUI',
@@ -33,10 +31,20 @@ DJBeatGridOverlay class >> example [
 ]
 
 { #category : 'accessing' }
+DJBeatGridOverlay >> beats [ 
+^ beats
+]
+
+{ #category : 'accessing' }
 DJBeatGridOverlay >> beats: aCollection [
 	"Fractions of the whole track, 0 to 1, one per beat."
 	beats := aCollection.
 	self rebuild
+]
+
+{ #category : 'accessing' }
+DJBeatGridOverlay >> beatsPerBar [ 
+^ beatsPerBar 
 ]
 
 { #category : 'accessing' }
@@ -45,57 +53,26 @@ DJBeatGridOverlay >> beatsPerBar: anInteger [
 	self rebuild
 ]
 
+{ #category : 'building' }
+DJBeatGridOverlay >> buildContent [
+	beats doWithIndex: [ :each :index |
+		| x |
+		x := self xFor: each.
+		(self isVisibleAt: x) ifTrue: [
+			self addChild: (self lineAt: x isDownbeat: index \\ beatsPerBar = 1) ] ]
+]
+
 { #category : 'initialization' }
 DJBeatGridOverlay >> initialize [
 	beats := #(  ).
 	beatsPerBar := 4.
-	windowStart := 0.
-	windowSpan := 1.
-	super initialize.
-	self background: Color transparent.
-	self constraintsDo: [ :c |
-		c horizontal matchParent.
-		c vertical matchParent ].
-	self addEventHandlerOn: BlElementExtentChangedEvent do: [ :e | self rebuild ]
+	super initialize
 ]
 
 { #category : 'accessing' }
 DJBeatGridOverlay >> lineAt: aNumber isDownbeat: aBoolean [
 	"Downbeats carry the bar; the beats between are hairlines."
-
-	^ BlElement new
-		  background: (aBoolean
-				   ifTrue: [ DJTheme text ]
-				   ifFalse: [ DJTheme dimText ]);
-		  extent: (aBoolean
-				   ifTrue: [ 2 ]
-				   ifFalse: [ 1 ]) @ self height;
-		  position: aNumber @ 0;
-		  constraintsDo: [ :c | c ignoreByLayout ];
-		  yourself
-]
-
-{ #category : 'building' }
-DJBeatGridOverlay >> rebuild [
-	self removeChildren.
-	self width > 0 ifFalse: [ ^ self ].
-	beats doWithIndex: [ :each :index |
-		| x |
-		x := self xFor: each.
-		(x between: 0 and: self width) ifTrue: [
-			self addChild: (self lineAt: x isDownbeat: index \\ beatsPerBar = 1) ] ]
-]
-
-{ #category : 'accessing' }
-DJBeatGridOverlay >> windowFrom: aStart span: aSpan [
-	"The slice of the track my host is showing. An overview passes
-	 0 and 1; a scrolling view passes its visible window."
-	windowStart := aStart.
-	windowSpan := aSpan.
-	self rebuild
-]
-
-{ #category : 'accessing' }
-DJBeatGridOverlay >> xFor: aFraction [
-	^ (aFraction - windowStart) / windowSpan * self width
+	^ aBoolean
+		  ifTrue: [ self lineAt: aNumber width: 2 color: DJTheme text ]
+		  ifFalse: [ self lineAt: aNumber width: 1 color: DJTheme dimText ]
 ]
