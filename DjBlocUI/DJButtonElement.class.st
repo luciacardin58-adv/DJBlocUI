@@ -61,9 +61,25 @@ DJButtonElement >> inputLabel [
 ]
 
 { #category : 'accessing' }
+DJButtonElement >> isOn [ 
+"ICButton declares isOn with accessors but never assigns it. value is
+	 the real state, and it holds 0/1 despite the value: aBoolean signature."
+	^ self value = 1
+]
+
+{ #category : 'accessing' }
 DJButtonElement >> label: aString [
 	inputText := aString.
 	inputLabel text: (self isOn
 			 ifTrue: [ self configuredString: aString ]
 			 ifFalse: [ self configuredStringDark: aString ])
+]
+
+{ #category : 'accessing' }
+DJButtonElement >> setValueSilently: aBoolean [
+	"ICButton >> setValue: notifies unconditionally, and callback answers
+	 a no-op block rather than nil when unset - so the slider trait's
+	 suppression cannot work here. toggle is already the silent path:
+	 it sets the value and repaints without notifying."
+	self isOn = aBoolean ifFalse: [ self toggle ]
 ]

@@ -12,14 +12,58 @@ so telling it back would echo.
 Class {
 	#name : 'DJSyncButtonElement',
 	#superclass : 'DJButtonElement',
+	#instVars : [
+		'sync'
+	],
 	#category : 'DjBlocUI-DeckBody',
 	#package : 'DjBlocUI',
 	#tag : 'DeckBody'
 }
+
+{ #category : 'examples' }
+DJSyncButtonElement class >> example [ 
+
+<script>
+	| container button readout space |
+	button := self new.
+	readout := DJTheme textElement: 'released' color: DJTheme dimText size: 12.
+	button callback: [ :each |
+		readout text: (DJTheme
+				 textElement: (button isLatched ifTrue: [ 'latched' ] ifFalse: [ 'released' ])
+				 color: DJTheme dimText
+				 size: 12) text ].
+	container := DJPanelElement new
+		             layout: (BlLinearLayout vertical
+				              cellSpacing: DJTheme gap;
+				              alignCenter);
+		             beMatchingParent;
+		             yourself.
+	container addChildren: { button. readout }.
+	space := container inSpace.
+	space extent: 240 @ 160.
+	space title: 'DJSyncButtonElement'.
+	space show
+]
 
 { #category : 'initialization' }
 DJSyncButtonElement >> initialize [
 	inputText := 'sync'.
 	super initialize.
 	self isToggleable: true
+]
+
+{ #category : 'testing' }
+DJSyncButtonElement >> isLatched [ 
+^ self isOn
+]
+
+{ #category : 'operations' }
+DJSyncButtonElement >> latch [
+	self setValueSilently: true
+]
+
+{ #category : 'operations' }
+DJSyncButtonElement >> release [
+	"The deck was nudged by hand, so the latch drops."
+	self setValueSilently: false
 ]
