@@ -52,6 +52,13 @@ DJTheme class >> panel [
 ]
 
 { #category : 'building' }
+DJTheme class >> rope: aString color: aColor size: anInteger [
+	^ aString asRopedText attributes: {
+			  (BlTextForegroundAttribute paint: aColor).
+			  (BlFontSizeAttribute size: anInteger) }
+]
+
+{ #category : 'building' }
 DJTheme class >> stubLabel: aString [
 	^ self textElement: aString color: self dimText size: 12
  
@@ -64,11 +71,8 @@ DJTheme class >> text [
 
 { #category : 'building' }
 DJTheme class >> textElement: aString color: aColor size: anInteger [
-
 	^ BlTextElement new
-		  text: (aString asRopedText attributes: {
-					   (BlTextForegroundAttribute paint: aColor).
-					   (BlFontSizeAttribute size: anInteger) });
+		  text: (self rope: aString color: aColor size: anInteger);
 		  yourself
 ]
 

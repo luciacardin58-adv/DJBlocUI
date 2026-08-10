@@ -4,7 +4,7 @@ Clicking me seeks; I never scroll.
 "
 Class {
 	#name : 'DJTrackOverviewElement',
-	#superclass : 'BlElement',
+	#superclass : 'DJPanelElement',
 	#category : 'DjBlocUI-DeckHeader',
 	#package : 'DjBlocUI',
 	#tag : 'DeckHeader'

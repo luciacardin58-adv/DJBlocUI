@@ -1,13 +1,23 @@
 "
-I display a track's cover image, or a placeholder glyph when there is none.
+I display a track''s cover image, or a placeholder glyph when there is none.
+
+No format we read carries embedded artwork yet - WAV and AIFF do not, and MP3 support is ID3 only - so the placeholder is my normal state.'
 "
 Class {
 	#name : 'DJArtworkElement',
-	#superclass : 'DJStubElement',
+	#superclass : 'DJPanelElement',
+	#instVars : [
+		'glyph'
+	],
 	#category : 'DjBlocUI-DeckHeader',
 	#package : 'DjBlocUI',
 	#tag : 'DeckHeader'
 }
+
+{ #category : 'helper' }
+DJArtworkElement >> clear [
+	glyph text: (DJTheme rope: '♪' color: DJTheme dimText size: 24)
+]
 
 { #category : 'initialization' }
 DJArtworkElement >> initialize [
@@ -15,6 +25,12 @@ DJArtworkElement >> initialize [
 	self constraintsDo: [ :c |
 		c horizontal exact: 64.
 		c vertical exact: 64 ]
+]
+
+{ #category : 'initialization' }
+DJArtworkElement >> initializeParts [
+	glyph := DJTheme textElement: '♪' color: DJTheme dimText size: 24.
+	self addChild: glyph
 ]
 
 { #category : 'updating' }
