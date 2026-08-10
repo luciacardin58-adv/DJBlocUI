@@ -1,20 +1,19 @@
 "
-I am a vertical line marking the current play position on a waveform.I am a vertical line marking the current play position on a waveform.
-
-My playPosition is a fraction of the whole track, 0 to 1. Not position:
-- BlElement owns that selector.
-
-A scrolling view holds me at its centre and moves the waveform under me;
-an overview leaves me where the fraction falls. Either way I hide myself
-when the position is outside the window I was given.
+I am a vertical line marking the current play position on a waveform.
+ 
+My playPosition is a fraction of the whole track, 0 to 1. It is never
+nil - a deck always has a position, even at zero - so unlike a cue
+marker I have nothing to clear.
+ 
+A scrolling view holds me at its centre by moving its window rather than
+by moving me; an overview leaves me where the fraction falls. Either way
+I hide myself when the position is outside the window.'!
 "
 Class {
 	#name : 'DJPlayheadElement',
-	#superclass : 'BlElement',
+	#superclass : 'DJWaveformOverlayElement',
 	#instVars : [
 		'playPosition',
-		'windowStart',
-		'windowSpan',
 		'lineColor'
 	],
 	#category : 'DjBlocUI-DeckBody',
@@ -22,18 +21,50 @@ Class {
 	#tag : 'DeckBody'
 }
 
+{ #category : 'examples' }
+DJPlayheadElement class >> example [
+	"Three playheads at different positions over one strip."
+	<script>
+	| host space |
+	host := DJPanelElement new beMatchingParent; yourself.
+	#( 0.2 0.5 0.8 ) do: [ :each |
+		host addChild: (DJPlayheadElement new playPosition: each; yourself) ].
+	space := host inSpace.
+	space extent: 600 @ 140.
+	space title: 'DJPlayheadElement'.
+	space show
+]
+
+{ #category : 'building' }
+DJPlayheadElement >> buildContent [
+	| x |
+	x := self xFor: playPosition.
+	(self isVisibleAt: x) ifFalse: [ ^ self ].
+	self addChild: (self lineAt: x width: 2 color: lineColor)
+]
+
 { #category : 'initialization' }
 DJPlayheadElement >> initialize [
 	playPosition := 0.
-	windowStart := 0.
-	windowSpan := 1.
 	lineColor := Color red.
-	super initialize.
-	self background: Color transparent.
-	self constraintsDo: [ :c |
-		c horizontal matchParent.
-		c vertical matchParent ].
-	self addEventHandlerOn: BlElementExtentChangedEvent do: [ :e | self rebuild ]
+	super initialize
+]
+
+{ #category : 'accessing' }
+DJPlayheadElement >> lineColor [ 
+^ lineColor
+]
+
+{ #category : 'accessing' }
+DJPlayheadElement >> lineColor: aColor [
+	lineColor := aColor.
+	self rebuild
+]
+
+{ #category : 'accessing' }
+DJPlayheadElement >> playPosition [ 
+
+^ playPosition 
 ]
 
 { #category : 'accessing' }
@@ -42,14 +73,4 @@ DJPlayheadElement >> playPosition: aFraction [
 	self rebuild
 
 
-]
-
-{ #category : 'building' }
-DJPlayheadElement >> rebuild [
-	| x |
-	self removeChildren.
-	self width > 0 ifFalse: [ ^ self ].
-	x := self xFor: playPosition.
-	(x between: 0 and: self width) ifFalse: [ ^ self ].
-	self addChild: (self lineAt: x)
 ]
