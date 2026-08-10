@@ -74,12 +74,14 @@ DJScrollingWFElement >> overlayLayer [
 ^ overlayLayer 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'api - tasks' }
 DJScrollingWFElement >> updateOverlays [
+
 	| total |
 	total := self waveWidth.
 	total > 0 ifFalse: [ ^ self ].
 	overlayLayer extent: self extent.
+	overlayLayer forceLayout.
 	overlayLayer childrenDo: [ :each |
 		each
 			windowFrom: self scrollOffset / total
