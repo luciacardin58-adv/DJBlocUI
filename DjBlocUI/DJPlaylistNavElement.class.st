@@ -23,7 +23,8 @@ Class {
 	#superclass : 'ToListElement',
 	#instVars : [
 		'playlistManager',
-		'playlistSelectedAction'
+		'playlistSelectedAction',
+		'scrollbar'
 	],
 	#category : 'DjBlocUI-Browser',
 	#package : 'DjBlocUI',
@@ -52,10 +53,10 @@ DJPlaylistNavElement >> initialize [
 
 	super initialize.
 	playlistSelectedAction := [ :aPlaylist | ].
-	self useScrollbar: true.
-	self primarySelectionMode beSingleSelection.
+	self selecter beSingleSelection.
 	self initializeNodeBuilder.
-	self initializePlaceholder.
+	self initializeScrollbar.
+	self placeholderString: 'No playlists'.
 	self initializeSelectionHandling
 ]
 
@@ -74,6 +75,18 @@ DJPlaylistNavElement >> initializePlaceholder [
 
 	self placeholderBuilder: [ :placeholder :element |
 		placeholder empty labelText: 'No playlists' ]
+]
+
+{ #category : 'initialization' }
+DJPlaylistNavElement >> initializeScrollbar [
+
+	scrollbar := BlVerticalScrollbarElement new.
+	scrollbar constraintsDo: [ :c |
+		c ignoreByLayout.
+		c margin: (BlInsets right: 2).
+		c ignored horizontal alignRight.
+		c ignored vertical alignBottom ].
+	scrollbar attachTo: self innerElement
 ]
 
 { #category : 'initialization' }
