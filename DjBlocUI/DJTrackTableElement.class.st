@@ -93,6 +93,7 @@ DJTrackTableElement >> initialize [
 	super initialize.
 	trackActivatedAction := [ :aTrack | ].
 	self addStamp: #background withValue: DJTheme browserBackground.
+	self list addStamp: #background withValue: DJTheme browserBackground.
 	self columns: self newColumns.
 	self showHeader: true.
 	self list selecter beSingleSelection.
@@ -190,24 +191,19 @@ DJTrackTableElement >> selectedTrack [
 ]
 
 { #category : 'accessing' }
-DJTrackTableElement >> track [ 
-^ self dataAccessor asOrderedCollection 
-]
-
-{ #category : 'accessing' }
-DJTrackTableElement >> trackActivatedAction [
-
-	^ trackActivatedAction
-]
-
-{ #category : 'accessing' }
 DJTrackTableElement >> trackActivatedAction: aOneArgBlock [
 	"aOneArgBlock is evaluated with the double-clicked DJTrackModel."
 
 	trackActivatedAction := aOneArgBlock
 ]
 
-{ #category : 'updating' }
+{ #category : 'accessing' }
+DJTrackTableElement >> tracks [
+
+	^ self dataAccessor asOrderedCollection
+]
+
+{ #category : 'accessing' }
 DJTrackTableElement >> tracks: aCollectionOfTracks [
 
 	self list selecter deselectAll.
