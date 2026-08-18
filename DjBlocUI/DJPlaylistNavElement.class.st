@@ -54,6 +54,7 @@ DJPlaylistNavElement >> initialize [
 	super initialize.
 	playlistSelectedAction := [ :aPlaylist | ].
 	self selecter beSingleSelection.
+	self addStamp: #background withValue: DJTheme browserBackground.
 	self initializeNodeBuilder.
 	self initializeScrollbar.
 	self placeholderString: 'No playlists'.
@@ -64,10 +65,12 @@ DJPlaylistNavElement >> initialize [
 DJPlaylistNavElement >> initializeNodeBuilder [
 
 	self nodeBuilder: [ :node :dataItem :holder |
-		node addChild: (ToLabel new
-				 text: dataItem name;
-				 hMatchParent;
-				 yourself) ]
+		| label |
+		label := DJTheme textElement: dataItem name color: DJTheme browserText size: 12.
+		label constraintsDo: [ :c |
+			c horizontal matchParent.
+			c vertical exact: 20 ].
+		node addChild: label ]
 ]
 
 { #category : 'initialization' }

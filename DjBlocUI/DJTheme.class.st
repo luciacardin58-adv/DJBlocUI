@@ -15,9 +15,9 @@ DJTheme class >> accent [
 ]
 
 { #category : 'colors' }
-DJTheme class >> browserBackground [ 
+DJTheme class >> browserBackground [
 
-^ Color black
+	^ Color black
 ]
 
 { #category : 'colors' }

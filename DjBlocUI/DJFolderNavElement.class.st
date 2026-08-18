@@ -31,8 +31,8 @@ Class {
 
 { #category : 'examples' }
 DJFolderNavElement class >> example [
-	<script>
 
+	<script>
 	| nav |
 	nav := self new.
 	nav rootFolder: FileLocator imageDirectory.
@@ -62,6 +62,7 @@ DJFolderNavElement >> initialize [
 	super initialize.
 	folderSelectedAction := [ :aFolder | ].
 	self selecter beSingleSelection.
+	self addStamp: #background withValue: DJTheme browserBackground.
 	self initializeChildrenGetter.
 	self initializeNodeBuilder.
 	self initializeScrollbar.
@@ -82,10 +83,10 @@ DJFolderNavElement >> initializeChildrenGetter [
 DJFolderNavElement >> initializeNodeBuilder [
 
 	self nodeBuilder: [ :node :dataItem :holder |
-		node addChild: (ToLabel new
-				 text: dataItem basename;
-				 hMatchParent;
-				 yourself) ]
+		| label |
+		label := DJTheme textElement: dataItem basename color: DJTheme browserText size: 12.
+		label constraintsDo: [ :c | c horizontal matchParent ].
+		node addChild: label ]
 ]
 
 { #category : 'initialization' }
