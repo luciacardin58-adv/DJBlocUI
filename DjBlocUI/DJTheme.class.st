@@ -15,6 +15,24 @@ DJTheme class >> accent [
 ]
 
 { #category : 'colors' }
+DJTheme class >> browserBackground [ 
+
+^ Color black
+]
+
+{ #category : 'colors' }
+DJTheme class >> browserBorder [
+
+^ Color cyan
+]
+
+{ #category : 'colors' }
+DJTheme class >> browserText [ 
+
+^ Color white
+]
+
+{ #category : 'colors' }
 DJTheme class >> console [
     ^ Color r: 14 g: 14 b: 14 range: 255
 ]
