@@ -55,6 +55,16 @@ DJDeckElement class >> new [
 		  yourself
 ]
 
+{ #category : 'helper' }
+DJDeckElement >> acceptThumbnail: aThumbnailOrNil for: aFileReference [
+	"An unreadable file leaves the previous wave in place rather than
+	 blanking the deck mid-set."
+
+	aThumbnailOrNil ifNil: [
+		^ self inform: 'Could not read ' , aFileReference basename ].
+	scrollingWaveform thumbnail: aThumbnailOrNil
+]
+
 { #category : 'accessing' }
 DJDeckElement >> bpm: aNumber [
 	jogWheel bpm: aNumber
@@ -100,7 +110,7 @@ DJDeckElement >> initializeParts [
 		transportBar }
 ]
 
-{ #category : 'accessing' }
+{ #category : 'actions' }
 DJDeckElement >> loadAction: aBlock [
 	"aBlock is evaluated with no arguments when my LOAD button is pressed.
 	 I do not know what it does - DJConsoleElement wires it to itself."
@@ -110,15 +120,34 @@ DJDeckElement >> loadAction: aBlock [
 
 { #category : 'actions' }
 DJDeckElement >> loadTrack: aDJTrackModel [
-	"Accept a browser track. DJTrackModel answers '--' for bpm until beat
-	 detection is wired, so only the title is forwarded for now."
+	"Accept a browser track: title to the header, waveform peaks to the scrolling wave. Reading and computing peaks is synchronous, so a long file blocks the UI - see DJAudioThumbnail's comment on async loading."
 
-	header title: aDJTrackModel title
+	header title: aDJTrackModel title.
+	self loadWaveformFor: aDJTrackModel filePath
+]
+
+{ #category : 'actions' }
+DJDeckElement >> loadWaveformFor: aFileReference [
+	"Reading a track and computing its peaks takes long enough to stutter a six minute file, so it runs at background priority. Bloc is not thread safe, so the element is only touched back on the UI process."
+
+	[
+	| thumb |
+	thumb := [ DJAudioThumbnail fromFile: aFileReference ]
+		         on: Error
+		         do: [ :each | nil ].
+	self inUIProcessDo: [ self acceptThumbnail: thumb for: aFileReference ] ]
+		forkAt: Processor userBackgroundPriority
+		named: 'DJ waveform load'
 ]
 
 { #category : 'helper' }
 DJDeckElement >> rateMultiplier [
 	^ tempoFader rateMultiplier
+]
+
+{ #category : 'accessing' }
+DJDeckElement >> scrollingWaveform [ 
+^ scrollingWaveform 
 ]
 
 { #category : 'helper' }

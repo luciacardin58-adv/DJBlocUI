@@ -74,6 +74,16 @@ DJDeckElementTest >> testLoadTrackSetsHeaderTitle [
 ]
 
 { #category : 'tests' }
+DJDeckElementTest >> testLoadTrackSetsWaveformThumbnail [
+
+	| sample |
+	sample := self kickSample.
+	sample ifNil: [ ^ self skip: 'TurboSamples not installed' ].
+	deck loadTrack: (DJTrackModel on: nil path: sample).
+	self deny: deck scrollingWaveform thumbnail isNil
+]
+
+{ #category : 'tests' }
 DJDeckElementTest >> testLoadTrackWithoutMetadataUsesBasename [
 
 	| sample track |
@@ -83,4 +93,37 @@ DJDeckElementTest >> testLoadTrackWithoutMetadataUsesBasename [
 	self deny: track hasMetadata.
 	deck loadTrack: track.
 	self assert: deck header trackTitle title equals: track title
+]
+
+{ #category : 'tests' }
+DJDeckElementTest >> testLoadedThumbnailHasPeaks [
+
+	| sample |
+	sample := self kickSample.
+	sample ifNil: [ ^ self skip: 'TurboSamples not installed' ].
+	deck loadTrack: (DJTrackModel on: nil path: sample).
+	self assert: deck scrollingWaveform thumbnail peaks isEmpty not
+]
+
+{ #category : 'tests' }
+DJDeckElementTest >> testLoadedThumbnailHasSampleRate [
+
+	| sample |
+	sample := self kickSample.
+	sample ifNil: [ ^ self skip: 'TurboSamples not installed' ].
+	deck loadTrack: (DJTrackModel on: nil path: sample).
+	self assert: deck scrollingWaveform thumbnail sampleRate equals: 44100
+]
+
+{ #category : 'tests' }
+DJDeckElementTest >> testLoadingSecondTrackReplacesThumbnail [
+
+	| kick clap first |
+	kick := self kickSample.
+	clap := self clapSample.
+	(kick isNil or: [ clap isNil ]) ifTrue: [ ^ self skip: 'TurboSamples not installed' ].
+	deck loadTrack: (DJTrackModel on: nil path: kick).
+	first := deck scrollingWaveform thumbnail.
+	deck loadTrack: (DJTrackModel on: nil path: clap).
+	self deny: deck scrollingWaveform thumbnail == first
 ]

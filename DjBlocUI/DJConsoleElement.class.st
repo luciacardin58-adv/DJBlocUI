@@ -21,6 +21,26 @@ DJConsoleElement class >> defaultExtent [
 ^ 1200 @ 600
 ]
 
+{ #category : 'examples' }
+DJConsoleElement class >> example [
+	<script>
+
+	| console playlist space |
+	console := self new.
+	playlist := DJPlaylist named: 'Samples'.
+	playlist addTrack: (DJTrackModel
+			 on: nil
+			 path: (FileLocator imageDirectory / 'TurboSamples' / 'kick' / 'BD_dry909.wav') asFileReference).
+	playlist addTrack: (DJTrackModel
+			 on: nil
+			 path: (FileLocator imageDirectory / 'TurboSamples' / 'clap' / 'CP_light909.wav') asFileReference).
+	console browser playlistNav playlists: { playlist }.
+	space := console inSpace.
+	space extent: DJConsoleElement defaultExtent.
+	space title: 'DJ Console'.
+	space show
+]
+
 { #category : 'accessing' }
 DJConsoleElement >> browser [ 
 ^ browser
