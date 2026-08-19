@@ -47,6 +47,17 @@ DJConsoleElementTest >> setUp [
 ]
 
 { #category : 'tests' }
+DJConsoleElementTest >> testLeftDeckLoadButtonLoadsSelectedTrack [
+
+	| sample |
+	sample := self kickSample.
+	sample ifNil: [ ^ self skip: 'TurboSamples not installed' ].
+	self loadPlaylistWith: sample.
+	console leftDeck transportBar loadButton callback value.
+	self assert: console leftDeck header trackTitle title equals: 'BD_dry909.wav'
+]
+
+{ #category : 'tests' }
 DJConsoleElementTest >> testLoadSelectedTrackLeavesOtherDeckAlone [
 
 	| sample |
@@ -84,4 +95,15 @@ DJConsoleElementTest >> testLoadSelectedTrackWithNoSelectionIsNoOp [
 
 	console loadSelectedTrackOnDeck: console leftDeck.
 	self assert: console browser selectedTrack isNil
+]
+
+{ #category : 'tests' }
+DJConsoleElementTest >> testRightDeckLoadButtonLoadsSelectedTrack [
+
+	| sample |
+	sample := self kickSample.
+	sample ifNil: [ ^ self skip: 'TurboSamples not installed' ].
+	self loadPlaylistWith: sample.
+	console rightDeck transportBar loadButton callback value.
+	self assert: console rightDeck header trackTitle title equals: 'BD_dry909.wav'
 ]

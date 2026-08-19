@@ -9,7 +9,8 @@ Class {
 	#instVars : [
 		'playButton',
 		'cueButton',
-		'beatJump'
+		'beatJump',
+		'loadButton'
 	],
 	#category : 'DjBlocUI-Transport',
 	#package : 'DjBlocUI',
@@ -47,10 +48,29 @@ DJTransportBarElement >> initialize [
 
 { #category : 'initialization' }
 DJTransportBarElement >> initializeParts [
+
+	loadButton := DJLoadButtonElement new.
 	playButton := DJPlayButtonElement new.
 	cueButton := DJCueButtonElement new.
 	beatJump := DJBeatJumpElement new.
-	self addChildren: { playButton. cueButton. beatJump }
+	self addChildren: {
+			loadButton.
+			playButton.
+			cueButton.
+			beatJump }
+]
+
+{ #category : 'accessing' }
+DJTransportBarElement >> loadAction: aBlock [
+
+	"aBlock is evaluated with no arguments when LOAD is pressed."
+
+	loadButton callback: aBlock
+]
+
+{ #category : 'accessing' }
+DJTransportBarElement >> loadButton [ 
+^ loadButton 
 ]
 
 { #category : 'accessing' }

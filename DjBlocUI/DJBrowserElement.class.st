@@ -31,6 +31,17 @@ Class {
 	#tag : 'Browser'
 }
 
+{ #category : 'accessing' }
+DJBrowserElement class >> defaultHeight [ 
+^ 200
+]
+
+{ #category : 'accessing' }
+DJBrowserElement class >> defaultSidebarWidth [ 
+
+^ 240
+]
+
 { #category : 'examples' }
 DJBrowserElement class >> example [
 	<script>
@@ -58,11 +69,11 @@ DJBrowserElement >> folderNav [
 DJBrowserElement >> initialize [
 
 	super initialize.
-	trackLoadAction := [ :aTrack | ].
+	trackLoadAction := [ :aTrack |  ].
 	self beRow.
 	self constraintsDo: [ :c |
-		c horizontal matchParent.
-		c vertical exact: 200 ]
+			c horizontal matchParent.
+			c vertical exact: self class defaultHeight ]
 ]
 
 { #category : 'initialization' }
@@ -71,8 +82,8 @@ DJBrowserElement >> initializeParts [
 	super initializeParts.
 	sidebar := DJBrowserSidebarElement new.
 	sidebar constraintsDo: [ :c |
-		c horizontal exact: 240.
-		c vertical matchParent ].
+			c horizontal exact: DJTheme sidebarWidth.
+			c vertical matchParent ].
 	trackTable := DJTrackTableElement new.
 	trackTable matchParent.
 	self addChildren: {

@@ -76,6 +76,17 @@ DJTheme class >> rope: aString color: aColor size: anInteger [
 			  (BlFontSizeAttribute size: anInteger) }
 ]
 
+{ #category : 'accessing' }
+DJTheme class >> rowHeight [ 
+^ 20
+]
+
+{ #category : 'building' }
+DJTheme class >> sidebarWidth [ 
+
+^ 240
+]
+
 { #category : 'building' }
 DJTheme class >> stubLabel: aString [
 	^ self textElement: aString color: self dimText size: 12

@@ -42,6 +42,16 @@ DJDeckElementTest >> setUp [
 ]
 
 { #category : 'tests' }
+DJDeckElementTest >> testLoadActionIsForwardedToTransportBar [
+
+	| notified |
+	notified := false.
+	deck loadAction: [ notified := true ].
+	deck transportBar loadButton callback value.
+	self assert: notified
+]
+
+{ #category : 'tests' }
 DJDeckElementTest >> testLoadTrackReplacesPreviousTitle [
 
 	| kick clap |

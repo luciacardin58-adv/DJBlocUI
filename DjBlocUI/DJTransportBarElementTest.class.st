@@ -29,14 +29,25 @@ DJTransportBarElementTest >> testAccessorsAnswerRealChildren [
 
 { #category : 'tests' }
 DJTransportBarElementTest >> testControlOrder [
-	self
-		assert: bar children asArray
-		equals: { bar playButton. bar cueButton. bar beatJump }
+
+
+	self assert: bar children asArray equals: {
+			bar loadButton.
+			bar playButton.
+			bar cueButton.
+			bar beatJump }
+]
+
+{ #category : 'tests' }
+DJTransportBarElementTest >> testHasLoadButton [
+
+	
+	self assert: bar loadButton class equals: DJLoadButtonElement
 ]
 
 { #category : 'tests' }
 DJTransportBarElementTest >> testHasThreeControls [
-	self assert: bar childrenCount equals: 3
+	self assert: bar childrenCount equals: 4
 ]
 
 { #category : 'tests' }
@@ -44,4 +55,11 @@ DJTransportBarElementTest >> testLaysOutHorizontally [
 	self
 		assert: bar layout orientation class
 		equals: BlLinearLayoutHorizontalOrientation
+]
+
+{ #category : 'tests' }
+DJTransportBarElementTest >> testLoadButtonIsFirst [
+
+
+	self assert: bar children first equals: bar loadButton
 ]

@@ -100,6 +100,14 @@ DJDeckElement >> initializeParts [
 		transportBar }
 ]
 
+{ #category : 'accessing' }
+DJDeckElement >> loadAction: aBlock [
+	"aBlock is evaluated with no arguments when my LOAD button is pressed.
+	 I do not know what it does - DJConsoleElement wires it to itself."
+
+	transportBar loadAction: aBlock
+]
+
 { #category : 'actions' }
 DJDeckElement >> loadTrack: aDJTrackModel [
 	"Accept a browser track. DJTrackModel answers '--' for bpm until beat
@@ -121,6 +129,11 @@ DJDeckElement >> setMirrored: aBoolean [
 { #category : 'accessing' }
 DJDeckElement >> track: aDJAudioFileInfo [
 	header track: aDJAudioFileInfo
+]
+
+{ #category : 'accessing' }
+DJDeckElement >> transportBar [ 
+^ transportBar 
 ]
 
 { #category : 'building' }

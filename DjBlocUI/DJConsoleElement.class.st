@@ -17,6 +17,11 @@ Class {
 }
 
 { #category : 'accessing' }
+DJConsoleElement class >> defaultExtent [ 
+^ 1200 @ 600
+]
+
+{ #category : 'accessing' }
 DJConsoleElement >> browser [ 
 ^ browser
 ]
@@ -49,15 +54,24 @@ DJConsoleElement >> initialize [
 
 	super initialize.
 	self background: DJTheme console.
-	self extent: 1000 @ 630
+	self extent: self class defaultExtent 
 ]
 
 { #category : 'initialization' }
 DJConsoleElement >> initializeParts [
- 
-    self addChild: self buildConsoleRow.
-    browser := DJBrowserElement new.
-    self addChild: browser
+
+	self addChild: self buildConsoleRow.
+	browser := DJBrowserElement new.
+	self addChild: browser.
+	self initializeWiring
+]
+
+{ #category : 'initialization' }
+DJConsoleElement >> initializeWiring [
+	"Each deck pulls the browser's selection when its LOAD is pressed."
+
+	leftDeck loadAction: [ self loadSelectedTrackOnDeck: leftDeck ].
+	rightDeck loadAction: [ self loadSelectedTrackOnDeck: rightDeck ]
 ]
 
 { #category : 'accessing' }
