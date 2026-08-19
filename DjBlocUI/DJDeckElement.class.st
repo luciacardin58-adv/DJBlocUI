@@ -100,6 +100,14 @@ DJDeckElement >> initializeParts [
 		transportBar }
 ]
 
+{ #category : 'actions' }
+DJDeckElement >> loadTrack: aDJTrackModel [
+	"Accept a browser track. DJTrackModel answers '--' for bpm until beat
+	 detection is wired, so only the title is forwarded for now."
+
+	header title: aDJTrackModel title
+]
+
 { #category : 'helper' }
 DJDeckElement >> rateMultiplier [
 	^ tempoFader rateMultiplier

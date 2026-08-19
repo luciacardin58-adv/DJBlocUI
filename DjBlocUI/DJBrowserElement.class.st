@@ -62,7 +62,7 @@ DJBrowserElement >> initialize [
 	self beRow.
 	self constraintsDo: [ :c |
 		c horizontal matchParent.
-		c vertical exact: 280 ]
+		c vertical exact: 200 ]
 ]
 
 { #category : 'initialization' }

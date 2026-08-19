@@ -45,10 +45,10 @@ DJConsoleElement >> buildConsoleRow [
 
 { #category : 'initialization' }
 DJConsoleElement >> initialize [
- 
-    super initialize.
-    self background: DJTheme console.
-    self size: 1280 @ 900
+
+	super initialize.
+	self background: DJTheme console.
+	self size: 1000 @ 630
 ]
 
 { #category : 'initialization' }
@@ -62,6 +62,18 @@ DJConsoleElement >> initializeParts [
 { #category : 'accessing' }
 DJConsoleElement >> leftDeck [
 ^ leftDeck
+]
+
+{ #category : 'actions' }
+DJConsoleElement >> loadSelectedTrackOnDeck: aDJDeckElement [
+	"Pull the browser's current selection onto the given deck. Answers
+	 self when nothing is selected, so a LOAD press on an empty browser
+	 is a no-op rather than an error."
+
+	| track |
+	track := browser selectedTrack.
+	track ifNil: [ ^ self ].
+	aDJDeckElement loadTrack: track
 ]
 
 { #category : 'accessing' }
