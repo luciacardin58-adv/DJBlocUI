@@ -2,7 +2,7 @@
 I am the lower pane of the browser sidebar. I show a folder tree rooted at rootFolder, a FileReference to a directory. Children are lazily computed by my childrenGetter, subdirectories only, no files.
 
 I do not know about decks, playlists, or the track table. When my selection
-changes I evaluate folderSelectedAction with the newly selected **FileReference**; my owner decides what that means (typically: list its audio files into DJTrackTableElement).
+changes I evaluate folderSelectedAction with the newly selected **FileReference**; my owner decides what that means (typically: list its audio files into **DJTrackTableElement**).
 
 I do not touch the filesystem until rootFolder: is sent.
 
@@ -75,7 +75,10 @@ DJFolderNavElement >> initializeChildrenGetter [
 
 	self childrenGetter: [ :aFileReference |
 		aFileReference isDirectory
-			ifTrue: [ aFileReference directories asSortedCollection: [ :a :b | a basename < b basename ] ]
+			ifTrue: [ (aFileReference asFileReference entries select: [ :each |
+					each isDirectory or: [
+						#( 'wav' 'aiff' 'aif' ) includes: each extension asLowercase ] ])
+					asSortedCollection: [ :a :b | a basename < b basename ] ]
 			ifFalse: [ #() ] ]
 ]
 
