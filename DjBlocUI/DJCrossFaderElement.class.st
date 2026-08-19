@@ -6,7 +6,7 @@ I sit between the channel strips and belong to neither deck. 0 is deck A alone, 
 beHorizontal sends rebuild, which swaps widgetSize and rebuilds my parts, so the size constraints DJFaderElement declared for the vertical default are stale by the time I am built and have to be restated.'
 "
 Class {
-	#name : 'DJCrossFaderElement',
+	#name : 'DJCrossfaderElement',
 	#superclass : 'DJFaderElement',
 	#category : 'DjBlocUI-MixerStrip',
 	#package : 'DjBlocUI',
@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : 'example' }
-DJCrossFaderElement class >> example [
+DJCrossfaderElement class >> example [
 	<script>
 	| container fader readout space |
 	fader := self new.
@@ -34,12 +34,12 @@ DJCrossFaderElement class >> example [
 ]
 
 { #category : 'helper' }
-DJCrossFaderElement >> centre [
+DJCrossfaderElement >> centre [
 	self setValueSilently: 50
 ]
 
 { #category : 'accessing' }
-DJCrossFaderElement >> gainA [
+DJCrossfaderElement >> gainA [
 	"Linear blend. A real crossfader curve is a later decision - this
 	 dips 6dB in the middle, which is audible but correct enough to
 	 wire the decks up."
@@ -47,12 +47,12 @@ DJCrossFaderElement >> gainA [
 ]
 
 { #category : 'accessing' }
-DJCrossFaderElement >> gainB [
+DJCrossfaderElement >> gainB [
 	^ self value / 100
 ]
 
 { #category : 'initialization' }
-DJCrossFaderElement >> initialize [
+DJCrossfaderElement >> initialize [
 	"beHorizontal sends rebuild, which may reset widgetSize - so the
 	 size constraints DJFaderElement declared for the vertical default
 	 have to be re-read afterwards."
@@ -64,12 +64,12 @@ DJCrossFaderElement >> initialize [
 ]
 
 { #category : 'testing' }
-DJCrossFaderElement >> isCentred [
+DJCrossfaderElement >> isCentred [
 	^ (self value - 50) abs < 1
 ]
 
 { #category : 'initialization' }
-DJCrossFaderElement >> nitialize [
+DJCrossfaderElement >> nitialize [
 	super initialize.
 	self beHorizontal.
 	self setValueSilently: 50.

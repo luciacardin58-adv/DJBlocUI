@@ -24,23 +24,24 @@ DJConsoleElement >> browser [
 { #category : 'building' }
 DJConsoleElement >> buildConsoleRow [
 
-	
-    | row |
-    leftDeck := DJDeckElement new.
-    mixer := DJMixerElement new.
-    rightDeck := DJDeckElement new beMirrored.
- 
-    row := DJPanelElement new
-               beRow;
-               background: Color transparent;
-               border: BlBorder empty;
-               padding: BlInsets empty;
-               yourself.
-    row constraintsDo: [ :c |
-        c horizontal matchParent.
-        c vertical matchParent ].
-    row addChildren: { leftDeck. mixer. rightDeck }.
-    ^ row
+	| row |
+	leftDeck := DJDeckElement new.
+	mixer := DJMixerElement new.
+	rightDeck := DJDeckElement mirrored.
+	row := DJPanelElement new
+		       beRow;
+		       background: Color transparent;
+		       border: BlBorder empty;
+		       padding: BlInsets empty;
+		       yourself.
+	row constraintsDo: [ :c |
+		c horizontal matchParent.
+		c vertical matchParent ].
+	row addChildren: {
+			leftDeck.
+			mixer.
+			rightDeck }.
+	^ row
 ]
 
 { #category : 'initialization' }
@@ -48,7 +49,7 @@ DJConsoleElement >> initialize [
 
 	super initialize.
 	self background: DJTheme console.
-	self size: 1000 @ 630
+	self extent: 1000 @ 630
 ]
 
 { #category : 'initialization' }
