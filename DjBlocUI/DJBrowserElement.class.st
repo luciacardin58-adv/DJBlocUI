@@ -33,7 +33,7 @@ Class {
 
 { #category : 'accessing' }
 DJBrowserElement class >> defaultHeight [ 
-^ 200
+^ 214
 ]
 
 { #category : 'accessing' }

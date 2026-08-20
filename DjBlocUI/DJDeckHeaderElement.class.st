@@ -55,7 +55,7 @@ DJDeckHeaderElement >> initialize [
 	self beRow.
 	self constraintsDo: [ :c |
 		c horizontal matchParent.
-		c vertical exact: 90 ]
+		c vertical exact: 63 ]
 ]
 
 { #category : 'initialization' }

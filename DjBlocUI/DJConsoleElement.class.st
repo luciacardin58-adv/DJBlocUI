@@ -18,7 +18,8 @@ Class {
 
 { #category : 'accessing' }
 DJConsoleElement class >> defaultExtent [ 
-^ 1200 @ 600
+^ 1200 @ 754
+
 ]
 
 { #category : 'examples' }
