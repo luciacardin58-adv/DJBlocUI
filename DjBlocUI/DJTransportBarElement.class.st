@@ -68,11 +68,11 @@ DJTransportBarElement >> initializeParts [
 ]
 
 { #category : 'accessing' }
-DJTransportBarElement >> loadAction: aBlock [
+DJTransportBarElement >> loadAction: aBlock [ 
+	"aBlock is evaluated with no arguments when LOAD is pressed. ICButton sends value: with the button's current value, and fires on both mouse down and mouse up. The guard keeps a single press to a single load."
 
-	"aBlock is evaluated with no arguments when LOAD is pressed."
-
-	loadButton callback: aBlock
+	loadButton callback: [ :each |
+		each = 1 ifTrue: [ aBlock value ] ]
 ]
 
 { #category : 'accessing' }
