@@ -33,25 +33,46 @@ DJButtonElement class >> exampleMomentary [
 		title: 'DJButtonElement (momentary)'
 ]
 
-{ #category : 'initialization' }
-DJButtonElement >> initialize [
-"ICLabelButton builds inputLabel only via class >> label:, so a plain
-	 new gives a button whose toggle raises DNU on inputLabel."
-	self inputText ifNil: [ self inputText: '' ].
-	super initialize.
-	self initializeLabel
-]
+{ #category : 'size' }
+DJButtonElement >> applyButtonSize [ 
+	"ICLabelButton gives the resting button an opaque grey gaussian shadow at
+	 zero offset, which reads as a lighter rectangle behind it on a dark panel.
+	 applySize reinstalls it on every resize, so overriding initializeButton is
+	 not enough. The lit state keeps its glow: lightDown sets its own effect."
 
-{ #category : 'initialization' }
-DJButtonElement >> initializeButton [
-	"ICLabelButton gives the resting button an opaque grey gaussian
-	 shadow at zero offset, which reads as a lighter rectangle behind
-	 it on a dark panel. The lit state keeps its glow."
-	super initializeButton.
+	super applyButtonSize.
 	self button effect: (BlGaussianShadowEffect
 			 color: (Color white alpha: 0.0)
 			 offset: 0 @ 0
 			 width: 10)
+]
+
+{ #category : 'defaults' }
+DJButtonElement >> defaultFitsContent [
+
+^ false
+
+]
+
+{ #category : 'defaults' }
+DJButtonElement >> defaultWidgetSize [
+
+^ 76 @ 36 
+]
+
+{ #category : 'defaults' }
+DJButtonElement >> fontSizeRatio [ 
+
+	^ 1 / 3
+]
+
+{ #category : 'initialization' }
+DJButtonElement >> initialize [
+
+
+	self inputText ifNil: [ self inputText: '' ].
+	super initialize.
+	self initializeLabel
 ]
 
 { #category : 'accessing' }
@@ -62,32 +83,15 @@ DJButtonElement >> inputLabel [
 
 { #category : 'accessing' }
 DJButtonElement >> isOn [ 
-"ICButton declares isOn with accessors but never assigns it. value is
-	 the real state, and it holds 0/1 despite the value: aBoolean signature."
-	^ self value = 1
-]
+	"currentValue is the real state and holds 0/1."
 
-{ #category : 'accessing' }
-DJButtonElement >> isToggleable: aBoolean [
-	"ICButton >> isToggleable: re-sends initializeEvents, and Bloc appends handlers rather than replacing them - so a toggleable button keeps the stale mouse-up from construction and gains a duplicate mouse-down. Note the handlers live on button, not self."
-	button removeEventHandlersSuchThat: [ :each |
-		{ BlMouseDownEvent. BlMouseUpEvent } includes: each eventClass ].
-	super isToggleable: aBoolean
-]
-
-{ #category : 'accessing' }
-DJButtonElement >> label: aString [
-	inputText := aString.
-	inputLabel text: (self isOn
-			 ifTrue: [ self configuredString: aString ]
-			 ifFalse: [ self configuredStringDark: aString ])
+	^ self currentValue = 1
 ]
 
 { #category : 'accessing' }
 DJButtonElement >> setValueSilently: aBoolean [
-	"ICButton >> setValue: notifies unconditionally, and callback answers
-	 a no-op block rather than nil when unset - so the slider trait's
-	 suppression cannot work here. toggle is already the silent path:
-	 it sets the value and repaints without notifying."
+"Set my lit state without running my callback, for when the deck has already stopped and only needs me to agree. setValue: would notify the deck and it would stop itself a second time. 
+Only fire and setValue: reach the callback; toggle just flips the value and repa"
+
 	self isOn = aBoolean ifFalse: [ self toggle ]
 ]
