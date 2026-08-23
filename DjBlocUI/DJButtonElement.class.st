@@ -10,7 +10,7 @@ Class {
 	#tag : 'SimpleWidgets'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'example' }
 DJButtonElement class >> exampleMomentary [
 	"Default is momentary: down lights it, up releases. CUE behaves
 	 this way; PLAY and SYNC are toggles."
@@ -64,15 +64,6 @@ DJButtonElement >> defaultWidgetSize [
 DJButtonElement >> fontSizeRatio [ 
 
 	^ 1 / 3
-]
-
-{ #category : 'initialization' }
-DJButtonElement >> initialize [
-
-
-	self inputText ifNil: [ self inputText: '' ].
-	super initialize.
-	self initializeLabel
 ]
 
 { #category : 'accessing' }

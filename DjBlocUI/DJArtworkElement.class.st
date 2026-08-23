@@ -14,17 +14,28 @@ Class {
 	#tag : 'DeckHeader'
 }
 
+{ #category : 'api - bounds' }
+DJArtworkElement class >> defaultSize [ 
+^ 64
+]
+
 { #category : 'helper' }
 DJArtworkElement >> clear [
 	glyph text: (DJTheme rope: '♪' color: DJTheme dimText size: 24)
 ]
 
+{ #category : 'api - bounds' }
+DJArtworkElement >> defaultSize [
+	^ self class defaultSize
+]
+
 { #category : 'initialization' }
 DJArtworkElement >> initialize [
-	super initialize.
+
+super initialize.
 	self constraintsDo: [ :c |
-		c horizontal exact: 64.
-		c vertical exact: 64 ]
+		c horizontal exact: self  defaultSize.
+		c vertical exact: self  defaultSize ]
 ]
 
 { #category : 'initialization' }

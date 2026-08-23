@@ -1,3 +1,10 @@
+"
+I show a track''s elapsed and remaining time in the deck header.
+
+Elapsed is the large figure, remaining the small one beneath it, prefixed with a minus so the two never read as a single number.
+
+I take both in one call: remaining is only meaningful against a total, and keeping a total of my own would let it drift from the deck''s. 
+"
 Class {
 	#name : 'DJTrackTimeDisplayElement',
 	#superclass : 'DJPanelElement',

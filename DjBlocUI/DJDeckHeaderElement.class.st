@@ -49,13 +49,20 @@ DJDeckHeaderElement >> elapsed: elapsedSeconds of: totalSeconds [
 	timeDisplay elapsed: elapsedSeconds of: totalSeconds
 ]
 
+{ #category : 'accessing' }
+DJDeckHeaderElement >> headerHeight [
+
+^ DJArtworkElement defaultSize + (DJTheme gap * 2)
+]
+
 { #category : 'initialization' }
 DJDeckHeaderElement >> initialize [
-	super initialize.
+
+super initialize.
 	self beRow.
 	self constraintsDo: [ :c |
 		c horizontal matchParent.
-		c vertical exact: 63 ]
+		c vertical exact: self headerHeight ]
 ]
 
 { #category : 'initialization' }
