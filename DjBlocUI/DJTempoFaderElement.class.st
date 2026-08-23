@@ -61,13 +61,14 @@ DJTempoFaderElement >> displayString [
 
 { #category : 'initialization' }
 DJTempoFaderElement >> initialize [
-	"initializeValues already set value := minValue against the old
-	 0 to 100 range, so the value has to be restated once the range
-	 is right, or the handle and the value disagree."
-	super initialize.
+"initializeValues already set value := minValue against the old0 to 100 range, so the value has to be restated once the range is right, or the handle and the value disagree."
+
+super initialize.
+	self name: 'TEMPO'.
 	self minValue: -8.
 	self maxValue: 8.
 	self setValueSilently: 0
+
 ]
 
 { #category : 'accessing' }

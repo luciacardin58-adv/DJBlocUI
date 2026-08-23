@@ -17,6 +17,6 @@ Class {
 DJLoadButtonElement >> initialize [
 	"Momentary, like cue."
 
-	inputText := 'load'.
-	super initialize
+super initialize.
+	self label: 'load'
 ]

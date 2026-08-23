@@ -62,6 +62,20 @@ DJEqKnobElement >> isUnity [
 	^ self value abs < 1
 ]
 
+{ #category : 'accessing' }
+DJEqKnobElement >> maxValue: aNumber [ 
+	super maxValue: aNumber.
+	maxLabel text: '' asRopedText
+]
+
+{ #category : 'accessing' }
+DJEqKnobElement >> minValue: aNumber [
+"ICKnob prints the range into minLabel and maxLabel, which share thebottom band with currentLabel and overprint it at our diameter. Therange is fixed and known from the strip, so only the current valueearns the room. The elements stay, blank: applyLabelSizes sendstransformDo: to both without a nil guard."
+
+	super minValue: aNumber.
+	minLabel text: '' asRopedText
+]
+
 { #category : 'helper' }
 DJEqKnobElement >> reset [
 	self setValueSilently: 0

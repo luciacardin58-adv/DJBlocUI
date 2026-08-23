@@ -33,18 +33,18 @@ DJButtonElement class >> exampleMomentary [
 		title: 'DJButtonElement (momentary)'
 ]
 
-{ #category : 'size' }
+{ #category : 'initialization' }
 DJButtonElement >> applyButtonSize [ 
-	"ICLabelButton gives the resting button an opaque grey gaussian shadow at
-	 zero offset, which reads as a lighter rectangle behind it on a dark panel.
-	 applySize reinstalls it on every resize, so overriding initializeButton is
-	 not enough. The lit state keeps its glow: lightDown sets its own effect."
-
 	super applyButtonSize.
-	self button effect: (BlGaussianShadowEffect
-			 color: (Color white alpha: 0.0)
-			 offset: 0 @ 0
-			 width: 10)
+	self button
+		effect: (BlGaussianShadowEffect
+				 color: (Color white alpha: 0.0)
+				 offset: 0 @ 0
+				 width: 10);
+		constraintsDo: [ :c |
+			c frame horizontal alignCenter.
+			c frame vertical alignCenter ]
+
 ]
 
 { #category : 'defaults' }
@@ -64,6 +64,12 @@ DJButtonElement >> defaultWidgetSize [
 DJButtonElement >> fontSizeRatio [ 
 
 	^ 1 / 3
+]
+
+{ #category : 'initialization' }
+DJButtonElement >> initializeWidget [ 
+super initializeWidget.
+	self layout: BlFrameLayout new
 ]
 
 { #category : 'accessing' }

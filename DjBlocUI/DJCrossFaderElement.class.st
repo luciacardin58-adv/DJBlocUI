@@ -13,6 +13,12 @@ Class {
 	#tag : 'MixerStrip'
 }
 
+{ #category : 'api - bounds' }
+DJCrossfaderElement class >> defaultBarThickness [ 
+
+^ 14
+]
+
 { #category : 'example' }
 DJCrossfaderElement class >> example [
 	<script>
@@ -53,14 +59,13 @@ DJCrossfaderElement >> gainB [
 
 { #category : 'initialization' }
 DJCrossfaderElement >> initialize [
-	"beHorizontal sends rebuild, which may reset widgetSize - so the
-	 size constraints DJFaderElement declared for the vertical default
-	 have to be re-read afterwards."
+	
+	
 	super initialize.
 	self beHorizontal.
-	self constraintsDo: [ :c |
-		c horizontal exact: self widgetSize x.
-		c vertical exact: self widgetSize y ]
+	self barThickness: self class defaultBarThickness.
+	self centre
+
 ]
 
 { #category : 'testing' }
@@ -68,12 +73,10 @@ DJCrossfaderElement >> isCentred [
 	^ (self value - 50) abs < 1
 ]
 
-{ #category : 'initialization' }
-DJCrossfaderElement >> nitialize [
-	super initialize.
-	self beHorizontal.
-	self setValueSilently: 50.
-	self constraintsDo: [ :c |
-		c horizontal exact: self widgetSize x.
-		c vertical exact: self widgetSize y ]
+{ #category : 'size' }
+DJCrossfaderElement >> spanWidth: anInteger [
+
+"Size my bar so my whole widget comes out aNumber wide. ICFader adds a marginLength at each end and no length padding."
+
+	self barLength: anInteger - (2 * self marginLength) thickness: self barThickness
 ]

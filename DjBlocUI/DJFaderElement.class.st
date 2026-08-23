@@ -34,6 +34,12 @@ DJFaderElement class >> example [
 		title: 'DJFaderElement'
 ]
 
+{ #category : 'api - bounds' }
+DJFaderElement >> defaultColor [ 
+
+^ Color transparent 
+]
+
 { #category : 'initialization' }
 DJFaderElement >> initialize [
 	"widgetSize: sends size:, which a parent layout can override the

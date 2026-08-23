@@ -14,6 +14,12 @@ Class {
 	#tag : 'Root'
 }
 
+{ #category : 'defaults' }
+DJMixerElement class >> defaultWidth [ 
+
+^ 340
+]
+
 { #category : 'building' }
 DJMixerElement >> buildStripsRow [
 | row |
@@ -50,10 +56,11 @@ DJMixerElement >> initialize [
 
 { #category : 'initialization' }
 DJMixerElement >> initializeParts [
- 
-    crossfader := DJCrossfaderElement new.
-    self addChild: self buildStripsRow.
-    self addChild: crossfader
+
+	crossfader := DJCrossfaderElement new.
+	crossfader spanWidth: self class defaultWidth - (DJTheme gap * 2).
+	self addChild: self buildStripsRow.
+	self addChild: crossfader
 ]
 
 { #category : 'accessing' }

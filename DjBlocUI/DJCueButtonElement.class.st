@@ -15,6 +15,6 @@ Class {
 DJCueButtonElement >> initialize [
 	"Momentary, unlike play and sync."
 
-	inputText := 'cue'.
-	super initialize
+super initialize.
+	self label: 'cue'
 ]
