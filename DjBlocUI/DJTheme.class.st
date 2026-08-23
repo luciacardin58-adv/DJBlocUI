@@ -32,9 +32,19 @@ DJTheme class >> browserText [
 ^ Color white
 ]
 
+{ #category : 'TOREMOVE' }
+DJTheme class >> buttonHeight [ 
+^ 36
+]
+
 { #category : 'colors' }
 DJTheme class >> console [
     ^ Color r: 14 g: 14 b: 14 range: 255
+]
+
+{ #category : 'TOREMOVE' }
+DJTheme class >> defaultWidgetSize [ 
+	^ 76 @ self class  buttonHeight
 ]
 
 { #category : 'colors' }

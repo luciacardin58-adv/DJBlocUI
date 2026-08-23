@@ -28,6 +28,13 @@ DJTransportBarElement class >> example [
 ]
 
 { #category : 'accessing' }
+DJTransportBarElement >> barHeight [
+"My buttons set their own height and I add only my padding, so resizing a button resizes me."
+
+	^ playButton widgetSize y + (DJTheme gap * 2)
+]
+
+{ #category : 'accessing' }
 DJTransportBarElement >> beatJump [
 	^ beatJump
 ]
@@ -38,12 +45,12 @@ DJTransportBarElement >> cueButton [
 ]
 
 { #category : 'initialization' }
-DJTransportBarElement >> initialize [
+DJTransportBarElement >> initialize [ 
 	super initialize.
 	self beRow.
 	self constraintsDo: [ :c |
 		c horizontal matchParent.
-		c vertical exact: 63 ]
+		c vertical exact: self barHeight ]
 ]
 
 { #category : 'initialization' }

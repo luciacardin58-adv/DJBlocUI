@@ -34,13 +34,17 @@ DJKnobElement class >> example [
 		title: 'DJKnobElement'
 ]
 
-{ #category : 'initialization' }
+{ #category : 'accessing' }
 DJKnobElement >> backColor [
-	"ICKnob paints an opaque diameter+100 frame behind itself.
-	 ICDarkKnob2 does not override this - it is not one of its seven
-	 cosmetic methods - so every knob carries 35pt of dead margin
-	 that hides whatever panel it sits on."
+	
+
 	^ Color transparent
+]
+
+{ #category : 'accessing' }
+DJKnobElement >> diskSize [ 
+
+^ self outerRingSize
 ]
 
 { #category : 'initialization' }
@@ -53,4 +57,15 @@ DJKnobElement >> initialize [
 	self constraintsDo: [ :c |
 		c horizontal exact: self diameter + 100.
 		c vertical exact: self diameter + 100 ]
+]
+
+{ #category : 'accessing' }
+DJKnobElement >> knobSize [ 
+	^ self diameter * 4 / 3
+
+]
+
+{ #category : 'accessing' }
+DJKnobElement >> outerRingSize [ 
+^ self diameter * 3 / 2
 ]

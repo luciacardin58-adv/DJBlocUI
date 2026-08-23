@@ -29,17 +29,22 @@ DJBeatJumpElement >> beatCount: anInteger [
 
 { #category : 'initialization' }
 DJBeatJumpElement >> initialize [
+
+
 	beatCount := 4.
 	super initialize.
+	self beBare.
 	self beRow.
 	self constraintsDo: [ :c |
 		c horizontal fitContent.
-		c vertical matchParent ]
+		c vertical fitContent ]
 ]
 
 { #category : 'initialization' }
-DJBeatJumpElement >> initializeParts [
+DJBeatJumpElement >> initializeParts [ 
 	backButton := DJButtonElement label: '<'.
 	forwardButton := DJButtonElement label: '>'.
+	{ backButton. forwardButton } do: [ :each |
+		each widgetSize: DJTheme buttonHeight asPoint ].
 	self addChildren: { backButton. forwardButton }
 ]

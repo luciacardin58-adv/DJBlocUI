@@ -13,6 +13,13 @@ Class {
 	#tag : 'MixerStrip'
 }
 
+{ #category : 'defaults' }
+DJEqKnobElement class >> defaultDiameter [ 
+"Three of us stack in one strip; ICKnob's 60 gives a 160pt frame apiece, which does not fit."
+
+	^ 30
+]
+
 { #category : 'examples' }
 DJEqKnobElement class >> example [
 	<script>
@@ -35,13 +42,12 @@ DJEqKnobElement >> diameter [
 
 { #category : 'initialization' }
 DJEqKnobElement >> initialize [
-	super initialize.
+
+super initialize.
+	self diameter: self class defaultDiameter.
 	self minValue: -100.
 	self maxValue: 100.
-	self setValueSilently: 0.
-	self constraintsDo: [ :c |
-		c horizontal exact: 80.
-		c vertical exact: 80 ]
+	self setValueSilently: 0
 ]
 
 { #category : 'testing' }
