@@ -1,12 +1,39 @@
 "
-I am a Bloc element that draws an audio waveform.
+I am a Bloc element that draws the waveform of an audio track.
 
-I render the min/max peak envelope held by a DJAudioThumbnail,
-mirroring the split JUCE uses: the thumbnail owns the peak data
-, and I own the drawing (UI layer).
+I do not hold raw PCM. I render a DJAudioThumbnail, which stores a precomputed set of min/max peak pairs, so the cost of drawing is independent of the track length.
+
+A playhead is drawn at trackPosition, expressed as a fraction of the track (0.0 to 1.0). Horizontal detail is controlled by zoomFactor.
+
+## Example, opening a waveform from a file path:
+```language=Pharo
+	| space |
+	space := (DJWaveformElement fromFilePath:
+		'/Users/music/myfavouritetune.wav') inSpace.
+	space extent: 800 @ 200.
+	space title: 'Waveform'.
+	space show
+```
+
+## Public API and Key Messages
+
+- thumbnail: aDJAudioThumbnail  — install an already built thumbnail
+- fromFilePath: aPathOrReference — build the thumbnail from an audio file
+- trackPosition: aFraction       — move the playhead
+- zoomFactor: aNumber            — set horizontal magnification
 
 
-See DJAudioThumbnail for the peak model.
+Internal Representation and Key Implementation Points
+
+	Instance Variables
+		thumbnail:      <DJAudioThumbnail>  peak summary being drawn
+		trackPosition:  <Number>            playhead, 0.0 to 1.0
+		zoomFactor:     <Number>            horizontal magnification
+
+	Implementation Points
+
+	The domain accessors are prefixed (trackPosition, not position) to
+	avoid shadowing the BlElement geometry protocol.
 "
 Class {
 	#name : 'DJWaveformElement',
@@ -24,6 +51,14 @@ Class {
 	#package : 'DjBlocUI',
 	#tag : 'Waveform'
 }
+
+{ #category : 'instance creation' }
+DJWaveformElement class >> fromFilePath: aPath [
+
+	^ self new
+		  fromFilePath: aPath;
+		  yourself
+]
 
 { #category : 'building' }
 DJWaveformElement >> buildPlayhead [
@@ -63,6 +98,13 @@ DJWaveformElement >> cycleZoom [
 	zoomButton text: (('x' , zoomFactor asString) asRopedText foreground: Color white).
 	self rebuildWaveGeometry.
 	self updatePlayhead
+]
+
+{ #category : 'loading' }
+DJWaveformElement >> fromFilePath: aPath [
+	"Build and install a thumbnail from a file path (String or FileReference)."
+
+	self thumbnail: (DJAudioThumbnail fromFile: aPath asFileReference fullName)
 ]
 
 { #category : 'initialization' }
