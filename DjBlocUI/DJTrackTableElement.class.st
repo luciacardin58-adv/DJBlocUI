@@ -63,7 +63,7 @@ DJTrackTableElement >> addTracksForFiles: aCollectionOfFileReferences [
 	 actually added."
 
 	| existing added |
-	existing := (self tracks collect: [ :each | each path asFileReference ]) asSet.
+	existing := (self tracks collect: [ :each | each filePath asFileReference ]) asSet.
 	added := OrderedCollection new.
 	aCollectionOfFileReferences do: [ :each |
 		(existing includes: each asFileReference) ifFalse: [
@@ -318,4 +318,11 @@ DJTrackTableElement >> tracks: aCollectionOfTracks [
 DJTrackTableElement >> tracksDroppedAction [
 
 	^ tracksDroppedAction
+]
+
+{ #category : 'accessing' }
+DJTrackTableElement >> tracksDroppedAction: aOneArgBlock [
+"aOneArgBlock is evaluated with the collection of DJTrackModels actually added by a drop, so my owner can persist them into a playlist."
+
+	tracksDroppedAction := aOneArgBlock
 ]

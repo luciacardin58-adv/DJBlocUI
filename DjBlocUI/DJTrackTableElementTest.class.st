@@ -5,7 +5,8 @@ Class {
 		'table',
 		'tempRoot',
 		'space',
-		'nav'
+		'nav',
+		'source'
 	],
 	#category : 'DjBlocUI-Tests',
 	#package : 'DjBlocUI',
@@ -38,15 +39,9 @@ DJTrackTableElementTest >> setUpCrate [
 { #category : 'initialization' }
 DJTrackTableElementTest >> setUpDragSourceOn: aFileReference [
 
-"A real DJFolderNavElement mid-drag, so the drop tests exercise the same payload path the UI uses."
-
-	space := BlSpace new.
-	nav := DJFolderNavElement new.
-	nav rootFolder: aFileReference.
-	space root addChild: nav.
-	space root addChild: table.
-	nav selecter selectIndex: 1.
-	nav dispatchEvent: (BlDragStartEvent new position: 10 @ 10; yourself)
+	source := DJTestDragSource new
+		          dragPayload: aFileReference;
+		          yourself
 ]
 
 { #category : 'running' }
@@ -198,7 +193,7 @@ DJTrackTableElementTest >> testDropAddsTracks [
 	self setUpDragSourceOn: tempRoot.
 	table dispatchEvent: (BlDropEvent new
 			 position: 50 @ 50;
-			 gestureSource: nav;
+			 gestureSource: source;
 			 yourself).
 	self assert: table tracks size equals: 4
 ]
@@ -214,7 +209,7 @@ DJTrackTableElementTest >> testDropDoesNotNotifyWhenNothingNew [
 	table tracksDroppedAction: [ :aCollection | notified := true ].
 	table dispatchEvent: (BlDropEvent new
 			 position: 50 @ 50;
-			 gestureSource: nav;
+			 gestureSource: source;
 			 yourself).
 	self deny: notified
 ]
@@ -227,7 +222,7 @@ DJTrackTableElementTest >> testDropIsConsumed [
 	self setUpDragSourceOn: tempRoot.
 	event := BlDropEvent new
 		         position: 50 @ 50;
-		         gestureSource: nav;
+		         gestureSource: source;
 		         yourself.
 	table dispatchEvent: event.
 	self assert: event isConsumed
@@ -243,18 +238,16 @@ DJTrackTableElementTest >> testDropNotifiesWithAddedTracks [
 	table tracksDroppedAction: [ :aCollection | notified := aCollection ].
 	table dispatchEvent: (BlDropEvent new
 			 position: 50 @ 50;
-			 gestureSource: nav;
+			 gestureSource: source;
 			 yourself).
 	self assert: notified size equals: 2
 ]
 
-{ #category : 'initialization' }
+{ #category : 'tests' }
 DJTrackTableElementTest >> testDropOfNonAudioIsRejected [
 
 	| event |
 	self setUpCrate.
-	self setUpDragSourceOn: tempRoot.
-	nav selecter selectIndex: (nav dataAccessor asOrderedCollection indexOf: tempRoot).
 	event := BlDropEvent new
 		         position: 50 @ 50;
 		         gestureSource: BlElement new;
