@@ -156,6 +156,12 @@ DJDeckElement >> setMirrored: aBoolean [
 ]
 
 { #category : 'accessing' }
+DJDeckElement >> tempoFader [ 
+
+^ tempoFader 
+]
+
+{ #category : 'accessing' }
 DJDeckElement >> track: aDJAudioFileInfo [
 	header track: aDJAudioFileInfo
 ]
