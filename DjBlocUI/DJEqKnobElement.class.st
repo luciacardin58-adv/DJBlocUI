@@ -52,14 +52,14 @@ super initialize.
 
 { #category : 'testing' }
 DJEqKnobElement >> isKilled [
-	^ self value <= self minValue
+	^ self currentValue <= self minValue
 ]
 
 { #category : 'testing' }
 DJEqKnobElement >> isUnity [
 	"The same pixel quantisation as the tempo fader: centre is a
 	 window, not a number."
-	^ self value abs < 1
+	^ self currentValue abs < 1
 ]
 
 { #category : 'accessing' }

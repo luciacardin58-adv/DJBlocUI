@@ -56,7 +56,7 @@ DJEqKnobElementTest >> testResetReturnsToUnityWithoutNotifying [
 DJEqKnobElementTest >> testStartsAtUnity [
 	"initializeDefaultValues left the value at the old minimum, so it
 	 has to be restated once the range is right."
-	self assert: knob value closeTo: 0.
+	self assert: knob currentValue closeTo: 0.
 	self assert: knob isUnity
 ]
 

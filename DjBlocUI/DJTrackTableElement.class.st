@@ -32,7 +32,8 @@ Class {
 	#name : 'DJTrackTableElement',
 	#superclass : 'ToTableElement',
 	#instVars : [
-		'trackActivatedAction'
+		'trackActivatedAction',
+		'tracksDroppedAction'
 	],
 	#category : 'DjBlocUI-Browser',
 	#package : 'DjBlocUI',
@@ -56,6 +57,47 @@ DJTrackTableElement class >> example [
 		show
 ]
 
+{ #category : 'updating' }
+DJTrackTableElement >> addTracksForFiles: aCollectionOfFileReferences [
+	"Append a track per file that is not listed already, and answer the tracks
+	 actually added."
+
+	| existing added |
+	existing := (self tracks collect: [ :each | each path asFileReference ]) asSet.
+	added := OrderedCollection new.
+	aCollectionOfFileReferences do: [ :each |
+		(existing includes: each asFileReference) ifFalse: [
+			existing add: each asFileReference.
+			added add: (DJTrackModel on: nil path: each asFileReference) ] ].
+	added ifEmpty: [ ^ added ].
+	self dataAccessor addAll: added.
+	^ added
+]
+
+{ #category : 'helpers' }
+DJTrackTableElement >> audioFilesFrom: anElement [
+"Answer the audio files carried by a drag source. Empty when the source is not one of mine, carries nothing, or carries nothing playable, which is also how a drop gets rejected."
+
+	| payload |
+	anElement ifNil: [ ^ #(  ) ].
+	(anElement respondsTo: #dragPayload) ifFalse: [ ^ #(  ) ].
+	payload := anElement dragPayload.
+	payload ifNil: [ ^ #(  ) ].
+	^ self audioFilesIn: payload asFileReference
+]
+
+{ #category : 'helpers' }
+DJTrackTableElement >> audioFilesIn: aFileReference [
+"A dropped directory contributes its audio files, one level deep. A dropped file contributes itself when it is audio."
+
+	aFileReference isDirectory ifTrue: [
+		^ (aFileReference files select: [ :each | self isAudioFile: each ])
+			  asSortedCollection: [ :a :b | a basename < b basename ] ].
+	^ (self isAudioFile: aFileReference)
+		  ifTrue: [ { aFileReference } ]
+		  ifFalse: [ #(  ) ]
+]
+
 { #category : 'initialization' }
 DJTrackTableElement >> cellBuilderBlock [
 	"The cell builder receives the already-fetched cell data, not the track."
@@ -70,6 +112,42 @@ DJTrackTableElement >> cellBuilderBlock [
 		  c horizontal matchParent.
 		  c vertical exact: 20 ].
 	  element addChild: label ]
+]
+
+{ #category : 'updating' }
+DJTrackTableElement >> clearDropHighlight [
+
+	self border: BlBorder empty
+]
+
+{ #category : 'event handling' }
+DJTrackTableElement >> handleDragEnter: anEvent [
+
+	(self audioFilesFrom: anEvent gestureSource) ifEmpty: [ ^ self ].
+	anEvent consumed: true.
+	self showDropHighlight
+]
+
+{ #category : 'event handling' }
+DJTrackTableElement >> handleDragLeave: anEvent [
+
+	anEvent consumed: true.
+	self clearDropHighlight
+]
+
+{ #category : 'event handling' }
+DJTrackTableElement >> handleDrop: anEvent [
+	"BlDropEvent is fired before BlDragEndEvent, so the source still holds its
+	 payload here."
+
+	| files added |
+	files := self audioFilesFrom: anEvent gestureSource.
+	files ifEmpty: [ ^ self ].
+	anEvent consumed: true.
+	self clearDropHighlight.
+	added := self addTracksForFiles: files.
+	added ifEmpty: [ ^ self ].
+	tracksDroppedAction value: added
 ]
 
 { #category : 'initialization' }
@@ -92,12 +170,14 @@ DJTrackTableElement >> initialize [
 
 	super initialize.
 	trackActivatedAction := [ :aTrack | ].
+	tracksDroppedAction := [ :aCollectionOfTracks | ].
 	self addStamp: #background withValue: DJTheme browserBackground.
 	self list addStamp: #background withValue: DJTheme browserBackground.
 	self columns: self newColumns.
 	self showHeader: true.
 	self list selecter beSingleSelection.
-	self initializeActivationHandling
+	self initializeActivationHandling.
+	self initializeDropTarget
 ]
 
 { #category : 'initialization' }
@@ -106,6 +186,23 @@ DJTrackTableElement >> initializeActivationHandling [
 	self list
 		addEventHandlerOn: ToListStrongSelectionEvent
 		do: [ :event | self notifyTrackActivated ]
+]
+
+{ #category : 'initialization' }
+DJTrackTableElement >> initializeDropTarget [
+	"BlDropEvent bubbles up from the row under the cursor, so it is caught here.
+	 Enter and leave are dispatched with canBePropagated: false, so those
+	 handlers have to be on me directly."
+
+	self addEventHandlerOn: BlDropEvent do: [ :event | self handleDrop: event ].
+	self addEventHandlerOn: BlDragEnterEvent do: [ :event | self handleDragEnter: event ].
+	self addEventHandlerOn: BlDragLeaveEvent do: [ :event | self handleDragLeave: event ]
+]
+
+{ #category : 'helpers' }
+DJTrackTableElement >> isAudioFile: aFileReference [
+
+	^ #( 'wav' 'aiff' 'aif' ) includes: aFileReference extension asLowercase
 ]
 
 { #category : 'initialization' }
@@ -190,6 +287,12 @@ DJTrackTableElement >> selectedTrack [
 	^ self dataAccessor at: self list selecter selectedIndex
 ]
 
+{ #category : 'updating' }
+DJTrackTableElement >> showDropHighlight [
+
+	self border: (BlBorder paint: DJTheme browserBorder width: 2)
+]
+
 { #category : 'accessing' }
 DJTrackTableElement >> trackActivatedAction: aOneArgBlock [
 	"aOneArgBlock is evaluated with the double-clicked DJTrackModel."
@@ -209,4 +312,10 @@ DJTrackTableElement >> tracks: aCollectionOfTracks [
 	self list selecter deselectAll.
 	self dataAccessor removeAll.
 	self dataAccessor addAll: aCollectionOfTracks
+]
+
+{ #category : 'accessing' }
+DJTrackTableElement >> tracksDroppedAction [
+
+	^ tracksDroppedAction
 ]
