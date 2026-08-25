@@ -22,7 +22,9 @@ Class {
 	#instVars : [
 		'rootFolder',
 		'folderSelectedAction',
-		'scrollbar'
+		'scrollbar',
+		'dragPayload',
+		'dragGhost'
 	],
 	#category : 'DjBlocUI-Browser',
 	#package : 'DjBlocUI',
@@ -41,6 +43,31 @@ DJFolderNavElement class >> example [
 		extent: 220 @ 320;
 		title: 'DJFolderNavElement';
 		show
+]
+
+{ #category : 'event handling' }
+DJFolderNavElement >> continueDrag: anEvent [
+
+	dragGhost ifNil: [ ^ self ].
+	anEvent consumed: true.
+	dragGhost position: anEvent position + (8 @ 8)
+]
+
+{ #category : 'accessing' }
+DJFolderNavElement >> dragPayload [
+	"Answer the FileReference being dragged out of me, or nil. Read by the drop target through event gestureSource."
+
+	^ dragPayload
+]
+
+{ #category : 'event handling' }
+DJFolderNavElement >> endDrag: anEvent [
+"BlDropEvent fires before BlDragEndEvent, so the target has already read dragPayload by the time I clear it."
+
+	anEvent consumed: true.
+	dragGhost ifNotNil: [ dragGhost removeFromParent ].
+	dragGhost := nil.
+	dragPayload := nil
 ]
 
 { #category : 'accessing' }
@@ -67,7 +94,8 @@ DJFolderNavElement >> initialize [
 	self initializeNodeBuilder.
 	self initializeScrollbar.
 	self placeholderString: 'No folder selected'.
-	self initializeSelectionHandling
+	self initializeSelectionHandling.
+	self initializeDragSources
 ]
 
 { #category : 'initialization' }
@@ -84,6 +112,16 @@ DJFolderNavElement >> initializeChildrenGetter [
 						 #( 'wav' 'aiff' 'aif' ) includes: each extension asLowercase ] ])
 					asSortedCollection: [ :a :b | a basename < b basename ] ]
 			ifFalse: [ #(  ) ] ]
+]
+
+{ #category : 'initialization' }
+DJFolderNavElement >> initializeDragSource [
+	"Handlers sit on me, not on the nodes: drag events bubble up from the node
+	 under the cursor, and Toplo recycles nodes."
+
+	self addEventHandlerOn: BlDragStartEvent do: [ :event | self startDrag: event ].
+	self addEventHandlerOn: BlDragEvent do: [ :event | self continueDrag: event ].
+	self addEventHandlerOn: BlDragEndEvent do: [ :event | self endDrag: event ]
 ]
 
 { #category : 'initialization' }
@@ -114,6 +152,21 @@ DJFolderNavElement >> initializeSelectionHandling [
 	self
 		addEventHandlerOn: ToListPrimarySelectionChangedEvent
 		do: [ :event | self notifyFolderSelected ]
+]
+
+{ #category : 'helper' }
+DJFolderNavElement >> newGhostFor: aFileReference [
+	"The ghost must not take mouse events, otherwise it is the element picked
+	 under the cursor and the drop target never receives the drop."
+
+	^ ToLabel new
+		  text: aFileReference basename;
+		  background: DJTheme browserBackground;
+		  border: (BlBorder paint: DJTheme browserBorder width: 1);
+		  padding: (BlInsets all: 4);
+		  constraintsDo: [ :c | c ignoreByLayout ];
+		  preventMeAndChildrenMouseEvents;
+		  yourself
 ]
 
 { #category : 'notifying' }
@@ -148,4 +201,18 @@ DJFolderNavElement >> selectedFolder [
 
 	self selecter hasSelection ifFalse: [ ^ nil ].
 	^ self dataAccessor at: self selecter selectedIndex
+]
+
+{ #category : 'event handling' }
+DJFolderNavElement >> startDrag: anEvent [
+"Consuming is mandatory: BlMouseProcessor abandons the gesture if BlDragStartEvent comes back unconsumed."
+
+	| entry |
+	entry := self selectedFolder.
+	entry ifNil: [ ^ self ].
+	anEvent consumed: true.
+	dragPayload := entry asFileReference.
+	dragGhost := self newGhostFor: dragPayload.
+	self space root addChild: dragGhost.
+	dragGhost position: anEvent position + (8 @ 8)
 ]
