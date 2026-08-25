@@ -95,7 +95,7 @@ DJFolderNavElement >> initialize [
 	self initializeScrollbar.
 	self placeholderString: 'No folder selected'.
 	self initializeSelectionHandling.
-	self initializeDragSources
+	self initializeDragSource
 ]
 
 { #category : 'initialization' }
