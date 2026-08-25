@@ -140,6 +140,12 @@ DJDeckElement >> loadWaveformFor: aFileReference [
 		named: 'DJ waveform load'
 ]
 
+{ #category : 'actions' }
+DJDeckElement >> playAction: aBlock [
+
+	transportBar playAction: aBlock
+]
+
 { #category : 'accessing' }
 DJDeckElement >> scrollingWaveform [ 
 ^ scrollingWaveform 

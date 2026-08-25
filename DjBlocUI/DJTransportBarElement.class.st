@@ -80,6 +80,12 @@ DJTransportBarElement >> loadButton [
 ^ loadButton 
 ]
 
+{ #category : 'actions' }
+DJTransportBarElement >> playAction: aBlock [
+
+	playButton callback: [ :each | aBlock value: playButton isPlaying ]
+]
+
 { #category : 'accessing' }
 DJTransportBarElement >> playButton [
 	^ playButton
