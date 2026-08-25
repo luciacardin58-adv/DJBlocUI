@@ -53,6 +53,21 @@ DJFilterKnobElement >> isLowPass [
 	^ self value < 0
 ]
 
+{ #category : 'accessing' }
+DJFilterKnobElement >> maxValue: aNumber [
+
+	super maxValue: aNumber.
+	maxLabel text: '' asRopedText
+]
+
+{ #category : 'accessing' }
+DJFilterKnobElement >> minValue: aNumber [
+"ICKnob prints the range into minLabel and maxLabel, which share the bottom band with currentLabel and overprint it at our diameter. The range is fixed and known from the strip, so only the current value gets the room. The elements stay, blank: applyLabelSizes sends transformDo: to both without a nil guard."
+
+	super minValue: aNumber.
+	minLabel text: '' asRopedText
+]
+
 { #category : 'helper' }
 DJFilterKnobElement >> reset [
 	self setValueSilently: 0
