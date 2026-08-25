@@ -1,10 +1,9 @@
 "
 I am a deck''s pitch fader, plus or minus 8 percent.
 
-Read snappedValue, not value: my travel quantises to pixels, so a reset
-fader lands near zero rather than on it and sync would correct forever.
-snappedValue answers exactly 0 inside snapWindow. rateMultiplier converts
-it for the deck.
+Read snappedValue, not value: my travel quantises to pixels, so a resetfader lands near zero rather than on it and sync would correct forever. snappedValue answers exactly 0 inside snapWindow.
+
+I answer a percentage, not a multiplier: **DJPlayer** converts .
 "
 Class {
 	#name : 'DJTempoFaderElement',
