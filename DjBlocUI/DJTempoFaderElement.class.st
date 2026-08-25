@@ -76,12 +76,6 @@ DJTempoFaderElement >> isCentred [
 	^ self snappedValue = 0
 ]
 
-{ #category : 'accessing' }
-DJTempoFaderElement >> rateMultiplier [
-	"The deck wants a multiplier, not a percentage."
-	^ 1 + (self snappedValue / 100)
-]
-
 { #category : 'operations' }
 DJTempoFaderElement >> reset [
 	"Silent: the deck asked for this, so telling it back would echo."

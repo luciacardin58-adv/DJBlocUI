@@ -140,11 +140,6 @@ DJDeckElement >> loadWaveformFor: aFileReference [
 		named: 'DJ waveform load'
 ]
 
-{ #category : 'helper' }
-DJDeckElement >> rateMultiplier [
-	^ tempoFader rateMultiplier
-]
-
 { #category : 'accessing' }
 DJDeckElement >> scrollingWaveform [ 
 ^ scrollingWaveform 
@@ -157,7 +152,6 @@ DJDeckElement >> setMirrored: aBoolean [
 
 { #category : 'accessing' }
 DJDeckElement >> tempoFader [ 
-
 ^ tempoFader 
 ]
 
