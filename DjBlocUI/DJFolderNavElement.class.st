@@ -72,14 +72,18 @@ DJFolderNavElement >> initialize [
 
 { #category : 'initialization' }
 DJFolderNavElement >> initializeChildrenGetter [
+"entries raises on directories the process cannot open — macOS guards Desktop, Documents and Downloads, and parts of ~/Library are closed outright. An unreadable folder reads as empty rather than killing the tree."
 
 	self childrenGetter: [ :aFileReference |
 		aFileReference isDirectory
-			ifTrue: [ (aFileReference asFileReference entries select: [ :each |
-					each isDirectory or: [
-						#( 'wav' 'aiff' 'aif' ) includes: each extension asLowercase ] ])
+			ifTrue: [
+				(([ aFileReference asFileReference entries ]
+					  on: Error
+					  do: [ :each | #(  ) ]) select: [ :each |
+					 each isDirectory or: [
+						 #( 'wav' 'aiff' 'aif' ) includes: each extension asLowercase ] ])
 					asSortedCollection: [ :a :b | a basename < b basename ] ]
-			ifFalse: [ #() ] ]
+			ifFalse: [ #(  ) ] ]
 ]
 
 { #category : 'initialization' }
