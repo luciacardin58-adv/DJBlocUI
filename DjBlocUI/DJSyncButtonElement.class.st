@@ -47,8 +47,9 @@ DJSyncButtonElement class >> example [
 
 { #category : 'initialization' }
 DJSyncButtonElement >> initialize [
-	inputText := 'sync'.
+
 	super initialize.
+	self label: 'sync'.
 	self isToggleable: true
 ]
 

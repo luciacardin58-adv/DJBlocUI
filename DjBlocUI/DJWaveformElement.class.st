@@ -159,16 +159,15 @@ DJWaveformElement >> positionBlock: aBlock [
 	playheadPositionBlock := aBlock
 ]
 
-{ #category : 'geometry' }
+{ #category : 'building' }
 DJWaveformElement >> rebuildWaveGeometry [
 
 	| columns |
 	thumbnail ifNil: [ ^ self ].
-	columns := thumbnail peaksForColumns:
-		           (self width * zoomFactor) rounded.
+	columns := thumbnail peaksForColumns: self waveWidth.
 	columns isEmpty ifTrue: [ ^ self ].
 	waveElement
-		extent: columns size @ self extent y;
+		extent: self waveWidth @ self extent y;
 		geometry: (BlPolygonGeometry vertices: (self verticesFor: columns))
 ]
 
@@ -205,17 +204,19 @@ DJWaveformElement >> updatePlayhead [
 	playheadElement position: x - offset @ 0
 ]
 
-{ #category : 'geometry' }
+{ #category : 'building' }
 DJWaveformElement >> verticesFor: columns [
-	"Closed polygon: max edge left→right, then min edge right→left.
-	 columns: Array of min@max Points, normalized -1.0..1.0."
-	| mid top bottom |
+"Closed polygon: max edge left→right, then min edge right→left. columns: Array of min@max Points, normalized -1.0..1.0.
+A short track yields fewer columns than pixels, so x is scaled to waveWidth instead of being taken as the column index."
+
+	| mid top bottom xScale |
 	mid := self extent y / 2.
+	xScale := self waveWidth / (columns size max: 1).
 	top := OrderedCollection new.
 	bottom := OrderedCollection new.
 	columns doWithIndex: [ :pair :i |
 		| x |
-		x := i - 1.
+		x := (i - 1) * xScale.
 		top add: x @ (mid - (pair y * mid)).
 		bottom addFirst: x @ (mid - (pair x * mid)) ].
 	^ (top , bottom) asArray

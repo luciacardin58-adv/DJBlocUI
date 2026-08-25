@@ -15,8 +15,7 @@ Class {
 DJPlayButtonElement >> initialize [
 
 	super initialize.
-	inputText := 'play'.
-
+	self label: 'play'.
 	self isToggleable: true
 ]
 
