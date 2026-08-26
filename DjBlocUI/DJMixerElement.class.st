@@ -17,7 +17,7 @@ Class {
 { #category : 'defaults' }
 DJMixerElement class >> defaultWidth [ 
 
-^ 340
+^ 430
 ]
 
 { #category : 'building' }
