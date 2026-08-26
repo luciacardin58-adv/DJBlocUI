@@ -28,6 +28,11 @@ Class {
 	#tag : 'DeckBody'
 }
 
+{ #category : 'defaults' }
+DJDeckElement class >> controlsRowHeight [
+	^ 160
+]
+
 { #category : 'examples' }
 DJDeckElement class >> example [
 	<script>
@@ -82,7 +87,7 @@ DJDeckElement >> buildControlsRow [
 	row := DJPanelElement new beBare; beRow; yourself.
 	row constraintsDo: [ :c |
 		c horizontal matchParent.
-		c vertical exact: 250 ].
+		c vertical exact: self class controlsRowHeight ].
 	row addChildren: parts.
 	^ row
 ]

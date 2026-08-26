@@ -46,12 +46,11 @@ DJMixerElement >> crossfader [
 
 { #category : 'initialization' }
 DJMixerElement >> initialize [
- 
-    super initialize.
-    self constraintsDo: [ :c |
-        c horizontal exact: 340.
-        c vertical matchParent ]
- 
+
+	super initialize.
+	self constraintsDo: [ :c |
+		c horizontal exact: self class defaultWidth.
+		c vertical matchParent ]
 ]
 
 { #category : 'initialization' }

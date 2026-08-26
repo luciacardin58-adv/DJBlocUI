@@ -17,7 +17,12 @@ Class {
 	#tag : 'Root'
 }
 
-{ #category : 'accessing' }
+{ #category : 'defaults' }
+DJConsoleElement class >> bandHeight [ 
+^ 340
+]
+
+{ #category : 'defaults' }
 DJConsoleElement class >> defaultExtent [ 
 ^ 1200 @ 754
 
@@ -50,7 +55,7 @@ DJConsoleElement >> browser [
 ^ browser
 ]
 
-{ #category : 'building' }
+{ #category : 'initialization' }
 DJConsoleElement >> buildConsoleRow [
 
 	| row |
@@ -65,6 +70,12 @@ DJConsoleElement >> buildConsoleRow [
 		       yourself.
 	row constraintsDo: [ :c |
 		c horizontal matchParent.
+		c vertical exact: self class bandHeight ].
+	leftDeck constraintsDo: [ :c |
+		c horizontal matchParent.
+		c vertical matchParent ].
+	rightDeck constraintsDo: [ :c |
+		c horizontal matchParent.
 		c vertical matchParent ].
 	row addChildren: {
 			leftDeck.
@@ -78,7 +89,9 @@ DJConsoleElement >> initialize [
 
 	super initialize.
 	self background: DJTheme console.
-	self extent: self class defaultExtent 
+	self constraintsDo: [ :c |
+		c horizontal matchParent.
+		c vertical matchParent ]
 ]
 
 { #category : 'initialization' }
@@ -86,6 +99,9 @@ DJConsoleElement >> initializeParts [
 
 	self addChild: self buildConsoleRow.
 	browser := DJBrowserElement new.
+	browser constraintsDo: [ :c |
+		c horizontal matchParent.
+		c vertical matchParent ].
 	self addChild: browser.
 	self initializeWiring
 ]
