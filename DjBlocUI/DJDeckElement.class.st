@@ -60,6 +60,11 @@ DJDeckElement class >> new [
 		  yourself
 ]
 
+{ #category : 'defaults' }
+DJDeckElement class >> waveformHeight [ 
+^ 90
+]
+
 { #category : 'helper' }
 DJDeckElement >> acceptThumbnail: aThumbnailOrNil for: aFileReference [
 	"An unreadable file leaves the previous wave in place rather than
@@ -107,6 +112,9 @@ DJDeckElement >> initialize [
 DJDeckElement >> initializeParts [
 	header := DJDeckHeaderElement new.
 	scrollingWaveform := DJScrollingWFElement new.
+	scrollingWaveform constraintsDo: [ :c |
+		c horizontal matchParent.
+		c vertical exact: self class waveformHeight ].
 	transportBar := DJTransportBarElement new.
 	self addChildren: {
 		header.

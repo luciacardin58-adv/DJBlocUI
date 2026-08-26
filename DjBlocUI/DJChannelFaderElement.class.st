@@ -53,3 +53,8 @@ DJChannelFaderElement >> initialize [
 DJChannelFaderElement >> isSilent [
 	^ self value < 1
 ]
+
+{ #category : 'as yet unclassified' }
+DJChannelFaderElement >> sizeScale [
+	^ 0.7
+]

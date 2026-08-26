@@ -81,6 +81,11 @@ DJTempoFaderElement >> reset [
 	self setValueSilently: 0
 ]
 
+{ #category : 'as yet unclassified' }
+DJTempoFaderElement >> sizeScale [
+	^ 0.7
+]
+
 { #category : 'accessing' }
 DJTempoFaderElement >> snapWindow [ 
 ^ 0.15

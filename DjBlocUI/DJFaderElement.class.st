@@ -42,11 +42,18 @@ DJFaderElement >> defaultColor [
 
 { #category : 'initialization' }
 DJFaderElement >> initialize [
-	"widgetSize: sends size:, which a parent layout can override the
-	 same way it collapsed the knob. Declare the size so the fader
-	 keeps its 74 x 244 wherever it is placed."
+"ICMixerFader derives handle, slot, ticks and font from barLength and barThickness, and barLength:thickness: recomputes them through applySize. widgetSize: only moves the box, which is why scaling it clipped the fader instead of shrinking it."
 	super initialize.
+	self
+		barLength: (self defaultBarLength * self sizeScale) rounded
+		thickness: (self defaultBarThickness * self sizeScale) rounded.
 	self constraintsDo: [ :c |
 		c horizontal exact: self widgetSize x.
 		c vertical exact: self widgetSize y ]
+]
+
+{ #category : 'accessing' }
+DJFaderElement >> sizeScale [
+"Multiplier applied to ICMixerFader's widgetSize. Subclasses that must fit a tighter strip answer less than 1."
+	^ 1
 ]
