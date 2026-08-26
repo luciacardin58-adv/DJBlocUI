@@ -9,7 +9,8 @@ Class {
 		'leftDeck',
 		'rightDeck',
 		'mixer',
-		'browser'
+		'browser',
+		'trackLoadedAction'
 	],
 	#category : 'DjBlocUI-Root',
 	#package : 'DjBlocUI',
@@ -104,14 +105,14 @@ DJConsoleElement >> leftDeck [
 
 { #category : 'actions' }
 DJConsoleElement >> loadSelectedTrackOnDeck: aDJDeckElement [
-	"Pull the browser's current selection onto the given deck. Answers
-	 self when nothing is selected, so a LOAD press on an empty browser
-	 is a no-op rather than an error."
+"Pull the browser's current selection onto the given deck. Answers self when nothing is selected, so a LOAD press on an empty browser is a no-op rather than an error."
 
 	| track |
 	track := browser selectedTrack.
 	track ifNil: [ ^ self ].
-	aDJDeckElement loadTrack: track
+	aDJDeckElement loadTrack: track.
+	trackLoadedAction ifNotNil: [ :block |
+		block value: aDJDeckElement value: track filePath ]
 ]
 
 { #category : 'accessing' }
@@ -123,4 +124,11 @@ DJConsoleElement >> mixer [
 DJConsoleElement >> rightDeck [ 
 
 	^ rightDeck
+]
+
+{ #category : 'accessing' }
+DJConsoleElement >> trackLoadedAction: aBlock [
+"Two arguments: the deck element loaded, and the track's file path.  DJApp maps the element to #A / #B; the UI never names decks."
+
+	trackLoadedAction := aBlock
 ]
