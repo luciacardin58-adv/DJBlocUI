@@ -25,7 +25,7 @@ DJFilterKnobElement class >> example [
 
 { #category : 'accessing' }
 DJFilterKnobElement >> diameter [ 
-^ 30
+^ 18
 ]
 
 { #category : 'initialization' }

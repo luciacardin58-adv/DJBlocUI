@@ -17,7 +17,7 @@ Class {
 DJEqKnobElement class >> defaultDiameter [ 
 "Three of us stack in one strip; ICKnob's 60 gives a 160pt frame apiece, which does not fit."
 
-	^ 30
+	^ 18
 ]
 
 { #category : 'examples' }
@@ -34,10 +34,8 @@ DJEqKnobElement class >> example [
 
 { #category : 'accessing' }
 DJEqKnobElement >> diameter [
-	"ICKnob reads the ivar directly in initializeGeometry, so what
-	 actually sizes me is the constraint DJKnobElement declares from
-	 this method."
-	^ 30
+"ICKnob reads the ivar directly in initializeGeometry, so what actually sizes me is the constraint DJKnobElement declares from this method."
+	^ 18
 ]
 
 { #category : 'initialization' }

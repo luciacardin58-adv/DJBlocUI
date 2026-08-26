@@ -46,7 +46,7 @@ DJJogWheelElement >> bpm: aNumber [
 			 size: 16) text
 ]
 
-{ #category : 'building' }
+{ #category : 'accessing' }
 DJJogWheelElement >> buildMarker [
 	"The marker is placed by trigonometry, so the layout must leave
 	 it alone."
@@ -54,7 +54,7 @@ DJJogWheelElement >> buildMarker [
 	marker := BlElement new
 		          background: DJTheme accent;
 		          geometry: BlCircleGeometry new;
-		          extent: 14 @ 14;
+		          extent: self markerSize @ self markerSize;
 		          constraintsDo: [ :c | c ignoreByLayout ];
 		          yourself.
 	self updateMarker.
@@ -62,8 +62,8 @@ DJJogWheelElement >> buildMarker [
 ]
 
 { #category : 'accessing' }
-DJJogWheelElement >> diameter [ 
-^ 200
+DJJogWheelElement >> diameter [
+	^ 100
 ]
 
 { #category : 'accessing' }
@@ -97,6 +97,11 @@ DJJogWheelElement >> initializeParts [
 	self addChild: self buildMarker
 ]
 
+{ #category : 'accessing' }
+DJJogWheelElement >> markerSize [
+	^ 10
+]
+
 { #category : 'private' }
 DJJogWheelElement >> nudgeBy: aFraction [
 	onNudge ifNotNil: [ :block | block value: aFraction ]
@@ -109,12 +114,13 @@ DJJogWheelElement >> onNudge: aBlock [
 	onNudge := aBlock
 ]
 
-{ #category : 'updating' }
+{ #category : 'accessing' }
 DJJogWheelElement >> updateMarker [
-	| angle radius centre |
+	| angle radius centre offset |
 	angle := position * 2 * Float pi - (Float pi / 2).
-	radius := self diameter / 2 - 18.
+	radius := self diameter / 2 - (self markerSize + 4).
 	centre := self diameter / 2.
+	offset := self markerSize / 2.
 	marker position:
-		centre + (angle cos * radius) - 7 @ (centre + (angle sin * radius) - 7)
+		centre + (angle cos * radius) - offset @ (centre + (angle sin * radius) - offset)
 ]

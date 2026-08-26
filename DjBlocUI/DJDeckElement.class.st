@@ -45,9 +45,9 @@ DJDeckElement class >> example [
 
 { #category : 'accessing' }
 DJDeckElement class >> mirrored [
-	"The right-hand deck."
+"The right-hand deck. Kept as a distinct constructor, but no longer reverses its controls row - both decks read in the same order."
 	^ self basicNew
-		  setMirrored: true;
+		  setMirrored: false;
 		  initialize;
 		  yourself
 ]
