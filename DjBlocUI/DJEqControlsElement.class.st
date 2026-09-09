@@ -4,7 +4,7 @@ Each is bipolar: centre is unity, full left is kill.
 "
 Class {
 	#name : 'DJEqControlsElement',
-	#superclass : 'DJPanelElement',
+	#superclass : 'DJBoxElement',
 	#instVars : [
 		'highKnob',
 		'midKnob',

@@ -60,12 +60,11 @@ DJCrossfaderElement >> gainB [
 { #category : 'initialization' }
 DJCrossfaderElement >> initialize [
 	
-	
 	super initialize.
 	self beHorizontal.
 	self barThickness: self class defaultBarThickness.
+	self restateSize.
 	self centre
-
 ]
 
 { #category : 'testing' }
@@ -73,10 +72,21 @@ DJCrossfaderElement >> isCentred [
 	^ (self value - 50) abs < 1
 ]
 
-{ #category : 'size' }
+{ #category : 'helper' }
+DJCrossfaderElement >> restateSize [
+	"barLength:thickness: and beHorizontal both recompute widgetSize through applySize, but neither updates the constraints DJFaderElement declared. Anything that resizes me has to say so again."
+
+	self constraintsDo: [ :c |
+		c horizontal exact: self widgetSize x.
+		c vertical exact: self widgetSize y ]
+]
+
+{ #category : 'helper' }
 DJCrossfaderElement >> spanWidth: anInteger [
+	"Size my bar so my whole widget comes out anInteger wide. ICFader adds a marginLength at each end and no length padding."
 
-"Size my bar so my whole widget comes out aNumber wide. ICFader adds a marginLength at each end and no length padding."
-
-	self barLength: anInteger - (2 * self marginLength) thickness: self barThickness
+	self
+		barLength: anInteger - (2 * self marginLength)
+		thickness: self barThickness.
+	self restateSize
 ]

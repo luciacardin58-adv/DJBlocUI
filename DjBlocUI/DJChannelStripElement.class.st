@@ -88,6 +88,18 @@ DJChannelStripElement class >> rowHeight [
 	^ 35
 ]
 
+{ #category : 'api - layout' }
+DJChannelStripElement >> beTightColumn [
+
+	self layout: (BlLinearLayout vertical cellSpacing: 0)
+]
+
+{ #category : 'api - layout' }
+DJChannelStripElement >> beTightRow [
+
+	self layout: (BlLinearLayout horizontal cellSpacing: 0)
+]
+
 { #category : 'building' }
 DJChannelStripElement >> buildFaderColumn [
 
@@ -140,7 +152,7 @@ DJChannelStripElement >> initialize [
 
 	mirrored ifNil: [ mirrored := false ].
 	super initialize.
-	self beRow.
+	self beTightRow.
 	self constraintsDo: [ :c |
 		c horizontal exact: self class defaultWidth.
 		c vertical matchParent ]

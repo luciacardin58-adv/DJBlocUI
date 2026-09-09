@@ -49,14 +49,13 @@ DJKnobElement >> diskSize [
 
 { #category : 'initialization' }
 DJKnobElement >> initialize [
-	"ICKnob sets extent: diameter + 100 in initializeGeometry, but an
-	 explicit extent does not survive a parent layout. The frame
-	 collapses toward the ring and takes the label band with it.
-	 minLabel, maxLabel and currentLabel all live in that band."
+"ICKnob sets extent: diameter + 100 in initializeGeometry to make room for minLabel, maxLabel and currentLabel. I want the ring and nothing else, so I size to the ring and clip the band away."
+
 	super initialize.
+	self clipChildren: true.
 	self constraintsDo: [ :c |
-		c horizontal exact: self diameter + 100.
-		c vertical exact: self diameter + 100 ]
+		c horizontal exact: self outerRingSize.
+		c vertical exact: self outerRingSize ]
 ]
 
 { #category : 'accessing' }
