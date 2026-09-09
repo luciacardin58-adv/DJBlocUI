@@ -70,14 +70,27 @@ DJChannelStripElement class >> rowHeight [
 ]
 
 { #category : 'building' }
+DJChannelStripElement >> buildFaderColumn [
+
+	| column |
+	column := DJBoxElement new
+		          exactWidth: self class faderColumnWidth;
+		          matchHeight;
+		          yourself.
+	column addChild: channelFader.
+	^ column
+]
+
+{ #category : 'building' }
 DJChannelStripElement >> buildKnobsColumn [
+
 	| column |
 	eqControls := DJEqControlsElement new.
 	filterKnob := DJFilterKnobElement label: 'FILTER'.
-	column := DJPanelElement new beBare; yourself.
-	column constraintsDo: [ :c |
-		c horizontal matchParent.
-		c vertical matchParent ].
+	column := DJBoxElement new
+		          exactWidth: self class knobColumnWidth;
+		          matchHeight;
+		          yourself.
 	column addChildren: { eqControls. filterKnob }.
 	^ column
 ]
@@ -123,4 +136,11 @@ DJChannelStripElement >> initializeParts [
 { #category : 'accessing' }
 DJChannelStripElement >> levelMeter [
 	^ levelMeter
+]
+
+{ #category : 'accessing' }
+DJChannelStripElement >> levelMeter: aDJLevelMeterElement [
+	"The mixer owns the placement; I only hold the reference."
+
+	levelMeter := aDJLevelMeterElement
 ]
