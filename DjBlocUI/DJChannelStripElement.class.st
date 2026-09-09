@@ -13,7 +13,8 @@ Class {
 		'eqControls',
 		'filterKnob',
 		'channelFader',
-		'levelMeter'
+		'levelMeter',
+		'mirrored'
 	],
 	#category : 'DjBlocUI-MixerStrip',
 	#package : 'DjBlocUI',
@@ -25,6 +26,14 @@ DJChannelStripElement class >> crossfaderHeight [
 	"Full-width bottom row: filter sliders outboard, crossfader centred."
 
 	^ 42
+]
+
+{ #category : 'initialization' }
+DJChannelStripElement class >> defaultWidth [
+"Derived from my columns, never stated twice."
+
+	^ self labelColumnWidth + self knobColumnWidth + self faderColumnWidth
+	  + (DJTheme gap * 2)
 ]
 
 { #category : 'examples' }
@@ -61,6 +70,16 @@ DJChannelStripElement class >> meterColumnWidth [
 	"Shared between both strips. Headphone buttons on top, VU meters below."
 
 	^ 60
+]
+
+{ #category : 'accessing' }
+DJChannelStripElement class >> mirrored [
+	"Deck B. The flag must be set before initializeParts reads it."
+
+	^ self basicNew
+		  setMirrored: true;
+		  initialize;
+		  yourself
 ]
 
 { #category : 'size' }
@@ -118,19 +137,28 @@ DJChannelStripElement >> gain [
 
 { #category : 'initialization' }
 DJChannelStripElement >> initialize [
+
+	mirrored ifNil: [ mirrored := false ].
 	super initialize.
 	self beRow.
-	self beMatchingParent
+	self constraintsDo: [ :c |
+		c horizontal exact: self class defaultWidth.
+		c vertical matchParent ]
 ]
 
-{ #category : 'building' }
+{ #category : 'initialization' }
 DJChannelStripElement >> initializeParts [
+
+	| columns |
 	channelFader := DJChannelFaderElement label: 'VOL'.
-	levelMeter := DJLevelMeterElement new.
-	self addChildren: {
-		channelFader.
-		self buildKnobsColumn.
-		levelMeter }
+	columns := { self buildKnobsColumn. self buildFaderColumn }.
+	self isMirrored ifTrue: [ columns := columns reversed ].
+	self addChildren: columns
+]
+
+{ #category : 'accessing' }
+DJChannelStripElement >> isMirrored [
+	^ mirrored 
 ]
 
 { #category : 'accessing' }
@@ -143,4 +171,10 @@ DJChannelStripElement >> levelMeter: aDJLevelMeterElement [
 	"The mixer owns the placement; I only hold the reference."
 
 	levelMeter := aDJLevelMeterElement
+]
+
+{ #category : 'accessing' }
+DJChannelStripElement >> setMirrored: aBoolean [
+
+	mirrored := aBoolean
 ]

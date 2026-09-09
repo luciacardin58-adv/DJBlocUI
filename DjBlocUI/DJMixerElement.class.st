@@ -29,6 +29,13 @@ DJMixerElement class >> defaultWidth [
 ^ 430
 ]
 
+{ #category : 'size' }
+DJMixerElement class >> meterColumnWidth [
+"Shared between both strips."
+
+	^ 60
+]
+
 { #category : 'building' }
 DJMixerElement >> buildCrossfaderRow [
 

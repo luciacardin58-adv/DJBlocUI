@@ -83,7 +83,15 @@ DJBoxElement >> initialize [
 "Vertical by default, matching DJPanelElement so the two are interchangeable without surprise."
 
 	super initialize.
-	self beColumn
+	self beColumn.
+	self initializeParts
+]
+
+{ #category : 'initialization' }
+DJBoxElement >> initializeParts [
+	"Subclasses add their children here."
+
+	^ self
 ]
 
 { #category : 'api - layout' }
