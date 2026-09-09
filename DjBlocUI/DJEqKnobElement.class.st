@@ -78,9 +78,3 @@ DJEqKnobElement >> minValue: aNumber [
 DJEqKnobElement >> reset [
 	self setValueSilently: 0
 ]
-
-{ #category : 'initialization' }
-DJEqKnobElement >> valueColor [
-
-	^ Color transparent
-]

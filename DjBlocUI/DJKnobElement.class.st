@@ -68,3 +68,9 @@ DJKnobElement >> knobSize [
 DJKnobElement >> outerRingSize [ 
 ^ self diameter * 3 / 2
 ]
+
+{ #category : 'initialization' }
+DJKnobElement >> valueColor [
+
+	^ Color transparent
+]

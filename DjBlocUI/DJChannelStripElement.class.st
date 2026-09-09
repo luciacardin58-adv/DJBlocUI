@@ -119,6 +119,7 @@ DJChannelStripElement >> buildKnobsColumn [
 	eqControls := DJEqControlsElement new.
 	filterKnob := DJFilterKnobElement label: 'FILTER'.
 	column := DJBoxElement new
+		          beTightColumn;
 		          exactWidth: self class knobColumnWidth;
 		          matchHeight;
 		          yourself.

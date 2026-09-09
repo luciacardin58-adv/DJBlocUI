@@ -66,6 +66,12 @@ DJBoxElement >> beRow [
 ]
 
 { #category : 'api - layout' }
+DJBoxElement >> beTightColumn [
+
+	self layout: (BlLinearLayout vertical cellSpacing: 0)
+]
+
+{ #category : 'api - layout' }
 DJBoxElement >> exactHeight: aNumber [
 
 	self constraintsDo: [ :c | c vertical exact: aNumber ]
