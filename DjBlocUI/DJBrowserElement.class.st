@@ -59,6 +59,19 @@ DJBrowserElement class >> example [
 		show
 ]
 
+{ #category : 'building' }
+DJBrowserElement class >> previewWidth [
+	"The black spinner/preview column right of the channel strips."
+
+	^ 110
+]
+
+{ #category : 'building' }
+DJBrowserElement class >> sidebarWidth [
+
+	^ 232
+]
+
 { #category : 'accessing' }
 DJBrowserElement >> folderNav [
 

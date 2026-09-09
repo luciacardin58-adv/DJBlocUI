@@ -28,9 +28,21 @@ Class {
 	#tag : 'DeckBody'
 }
 
+{ #category : 'accessing' }
+DJDeckElement class >> centreWidth [
+
+	^ 432
+]
+
 { #category : 'defaults' }
 DJDeckElement class >> controlsRowHeight [
 	^ 160
+]
+
+{ #category : 'accessing' }
+DJDeckElement class >> deckWidth [
+
+	^ 504
 ]
 
 { #category : 'examples' }
@@ -41,6 +53,19 @@ DJDeckElement class >> example [
 	space extent: 430 @ 620.
 	space title: 'Deck'.
 	space show
+]
+
+{ #category : 'accessing' }
+DJDeckElement class >> headerHeight [
+	"FX buttons, track title field, BPM readout."
+
+	^ 78
+]
+
+{ #category : 'accessing' }
+DJDeckElement class >> jogWidth [
+
+	^ 66
 ]
 
 { #category : 'accessing' }
@@ -67,9 +92,30 @@ DJDeckElement class >> requiredHeight [
 	^ 482
 ]
 
-{ #category : 'defaults' }
-DJDeckElement class >> waveformHeight [ 
-^ 90
+{ #category : 'accessing' }
+DJDeckElement class >> tempoWidth [
+
+	^ 96
+]
+
+{ #category : 'accessing' }
+DJDeckElement class >> topBandHeight [
+	"Decks + mixer. The browser takes what is left."
+
+	^ 236
+]
+
+{ #category : 'accessing' }
+DJDeckElement class >> transportHeight [
+	"Cue, play/pause, load."
+
+	^ 58
+]
+
+{ #category : 'accessing' }
+DJDeckElement class >> waveformHeight [
+
+	^ 100
 ]
 
 { #category : 'helper' }

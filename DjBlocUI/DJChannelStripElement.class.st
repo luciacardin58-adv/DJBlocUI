@@ -20,6 +20,13 @@ Class {
 	#tag : 'MixerStrip'
 }
 
+{ #category : 'size' }
+DJChannelStripElement class >> crossfaderHeight [
+	"Full-width bottom row: filter sliders outboard, crossfader centred."
+
+	^ 42
+]
+
 { #category : 'examples' }
 DJChannelStripElement class >> example [
 	<script>
@@ -28,6 +35,38 @@ DJChannelStripElement class >> example [
 	space extent: 200 @ 620.
 	space title: 'DJChannelStripElement'
 		; show
+]
+
+{ #category : 'size' }
+DJChannelStripElement class >> faderColumnWidth [
+	"Gain knob on top, volume fader below."
+
+	^ 45
+]
+
+{ #category : 'size' }
+DJChannelStripElement class >> knobColumnWidth [
+
+	^ 34
+]
+
+{ #category : 'size' }
+DJChannelStripElement class >> labelColumnWidth [
+
+	^ 16
+]
+
+{ #category : 'size' }
+DJChannelStripElement class >> meterColumnWidth [
+	"Shared between both strips. Headphone buttons on top, VU meters below."
+
+	^ 60
+]
+
+{ #category : 'size' }
+DJChannelStripElement class >> rowHeight [
+
+	^ 35
 ]
 
 { #category : 'building' }
