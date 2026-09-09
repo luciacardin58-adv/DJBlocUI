@@ -16,7 +16,7 @@ Class {
 
 { #category : 'api - bounds' }
 DJArtworkElement class >> defaultSize [ 
-^ 64
+^ 40
 ]
 
 { #category : 'helper' }

@@ -61,6 +61,13 @@ DJDeckElement class >> new [
 ]
 
 { #category : 'defaults' }
+DJDeckElement class >> requiredHeight [
+"padding 16 + header 56 + waveform 90 + controls row 244 + transport bar 52 + three cellSpacings 24. The controls row is the floor: ICMixerFader will not resize below 244."
+
+	^ 482
+]
+
+{ #category : 'defaults' }
 DJDeckElement class >> waveformHeight [ 
 ^ 90
 ]
@@ -82,6 +89,7 @@ DJDeckElement >> bpm: aNumber [
 
 { #category : 'building' }
 DJDeckElement >> buildControlsRow [
+
 	| row parts |
 	jogWheel := DJJogWheelElement new.
 	tempoFader := DJTempoFaderElement new.
@@ -92,9 +100,18 @@ DJDeckElement >> buildControlsRow [
 	row := DJPanelElement new beBare; beRow; yourself.
 	row constraintsDo: [ :c |
 		c horizontal matchParent.
-		c vertical exact: self class controlsRowHeight ].
+		c vertical exact: self controlsRowHeight ].
 	row addChildren: parts.
 	^ row
+
+]
+
+{ #category : 'defaults' }
+DJDeckElement >> controlsRowHeight [
+	"The tempo fader is the tallest thing in the row and ICMixerFader
+	 will not resize, so the row is exactly as tall as it is."
+
+	^ tempoFader widgetSize y
 ]
 
 { #category : 'accessing' }

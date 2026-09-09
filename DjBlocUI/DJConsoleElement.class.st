@@ -24,7 +24,7 @@ DJConsoleElement class >> bandHeight [
 
 { #category : 'defaults' }
 DJConsoleElement class >> defaultExtent [ 
-^ 1200 @ 754
+^ 1200 @ 750
 
 ]
 
@@ -55,7 +55,7 @@ DJConsoleElement >> browser [
 ^ browser
 ]
 
-{ #category : 'initialization' }
+{ #category : 'building' }
 DJConsoleElement >> buildConsoleRow [
 
 	| row |
@@ -70,18 +70,13 @@ DJConsoleElement >> buildConsoleRow [
 		       yourself.
 	row constraintsDo: [ :c |
 		c horizontal matchParent.
-		c vertical exact: self class bandHeight ].
-	leftDeck constraintsDo: [ :c |
-		c horizontal matchParent.
-		c vertical matchParent ].
-	rightDeck constraintsDo: [ :c |
-		c horizontal matchParent.
-		c vertical matchParent ].
+		c vertical exact: DJDeckElement requiredHeight ].
 	row addChildren: {
 			leftDeck.
 			mixer.
 			rightDeck }.
 	^ row
+
 ]
 
 { #category : 'initialization' }
