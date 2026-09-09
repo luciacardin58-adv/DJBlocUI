@@ -21,13 +21,6 @@ Class {
 	#tag : 'MixerStrip'
 }
 
-{ #category : 'size' }
-DJChannelStripElement class >> crossfaderHeight [
-	"Full-width bottom row: filter sliders outboard, crossfader centred."
-
-	^ 42
-]
-
 { #category : 'initialization' }
 DJChannelStripElement class >> defaultWidth [
 "Derived from my columns, never stated twice."

@@ -16,17 +16,26 @@ Class {
 	#tag : 'Root'
 }
 
-{ #category : 'as yet unclassified' }
-DJMixerElement class >> crossfaderSpan [
-	"Fader to fader across the meters, as in Mixxx."
+{ #category : 'defaults' }
+DJMixerElement class >> crossfaderHeight [
+	"Full-width bottom row: filter sliders outboard, crossfader centred."
 
-	^ self meterColumnWidth + (DJChannelStripElement faderColumnWidth * 2)
+	^ 42
+	
+]
+
+{ #category : 'building' }
+DJMixerElement class >> crossfaderSpan [
+	"Strip to strip. My width less my own padding and the hairline each side."
+
+	^ self defaultWidth - (DJTheme gap * 2) - 2
 ]
 
 { #category : 'defaults' }
-DJMixerElement class >> defaultWidth [ 
+DJMixerElement class >> defaultWidth [
 
-^ 430
+	^ (DJChannelStripElement defaultWidth * 2) + self meterColumnWidth
+	  + (DJTheme gap * 4)
 ]
 
 { #category : 'size' }
@@ -42,7 +51,6 @@ DJMixerElement >> buildCrossfaderRow [
 	| row |
 	crossfader := DJCrossfaderElement new.
 	crossfader spanWidth: self class crossfaderSpan.
-	crossfader constraintsDo: [ :c | c linear horizontal alignCenter ].
 	row := DJBoxElement new
 		          beRow;
 		          matchWidth;
@@ -86,6 +94,13 @@ DJMixerElement >> crossfader [
 ^ crossfader
 ]
 
+{ #category : 'building' }
+DJMixerElement >> crossfaderSpan [
+	"Strip to strip. My width less my own padding and the hairline each side."
+
+	^ self defaultWidth - (DJTheme gap * 2) - 2
+]
+
 { #category : 'initialization' }
 DJMixerElement >> initialize [
 
@@ -98,10 +113,9 @@ DJMixerElement >> initialize [
 { #category : 'initialization' }
 DJMixerElement >> initializeParts [
 
-	crossfader := DJCrossfaderElement new.
-	crossfader spanWidth: self class defaultWidth - (DJTheme gap * 2).
+	
 	self addChild: self buildStripsRow.
-	self addChild: crossfader
+	self addChild: self buildCrossfaderRow
 ]
 
 { #category : 'accessing' }

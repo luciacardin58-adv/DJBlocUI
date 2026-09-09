@@ -83,10 +83,11 @@ DJCrossfaderElement >> restateSize [
 
 { #category : 'helper' }
 DJCrossfaderElement >> spanWidth: anInteger [
-	"Size my bar so my whole widget comes out anInteger wide. ICFader adds a marginLength at each end and no length padding."
+	"Size my bar so my whole widget comes out anInteger wide. ICMixerFader adds a marginLength and a lengthPadding at each end, and lengthPadding  is handleThickness / 2, so it moves with barThickness."
 
 	self
-		barLength: anInteger - (2 * self marginLength)
+		barLength:
+			anInteger - (2 * self marginLength) - (2 * self lengthPadding)
 		thickness: self barThickness.
 	self restateSize
 ]
